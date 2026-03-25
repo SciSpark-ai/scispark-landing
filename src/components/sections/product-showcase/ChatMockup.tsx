@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -120,6 +120,16 @@ export function ChatMockup() {
   const showAnswer = phase === "answer" || phase === "followup";
   const showFollowup = phase === "followup";
 
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = useCallback(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTo({ top: messagesRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, []);
+
+  // Auto-scroll when phase or steps change
+  useEffect(() => { scrollToBottom(); }, [phase, currentStep, stepComplete, scrollToBottom]);
+
   const stepsToShow =
     phase === "reasoning"
       ? currentStep + 1
@@ -149,8 +159,8 @@ export function ChatMockup() {
         </div>
       </div>
 
-      {/* Messages area */}
-      <div className="p-4 space-y-4 min-h-[380px]">
+      {/* Messages area — fixed height, scrolls */}
+      <div ref={messagesRef} className="p-4 space-y-4 h-[420px] overflow-y-auto scrollbar-hide">
         {/* User question */}
         <AnimatePresence>
           {phase !== "idle" && (

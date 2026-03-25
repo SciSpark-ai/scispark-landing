@@ -70,7 +70,7 @@ export function Navigation() {
             <LanguageToggle />
             <a
               href="#final-cta"
-              className="bg-espresso text-white text-sm font-medium px-5 py-2.5 rounded-btn hover:opacity-90 transition"
+              className="bg-orange text-white text-sm font-medium px-5 py-2.5 rounded-btn hover:bg-orange/90 transition"
             >
               {t("cta")}
             </a>

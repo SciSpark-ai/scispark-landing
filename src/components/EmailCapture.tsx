@@ -70,7 +70,7 @@ export function EmailCapture({ source, buttonLabel, className }: EmailCapturePro
     <div className={className}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto"
+        className="flex flex-col sm:flex-row gap-3 w-full"
       >
         <input
           type="email"
@@ -84,15 +84,22 @@ export function EmailCapture({ source, buttonLabel, className }: EmailCapturePro
           disabled={status === "loading"}
           required
         />
-        <motion.button
+        <button
           type="submit"
           disabled={status === "loading"}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="bg-orange text-white font-medium px-6 py-3 rounded-pill whitespace-nowrap hover:bg-orange/90 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="group relative bg-orange text-white text-base font-medium px-6 py-3 rounded-pill whitespace-nowrap hover:bg-orange/90 transition disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden h-[48px]"
         >
-          {status === "loading" ? "..." : buttonLabel}
-        </motion.button>
+          {status === "loading" ? "..." : (
+            <span className="relative block overflow-hidden h-[20px]">
+              <span className="block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
+                {buttonLabel}
+              </span>
+              <span className="block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full" aria-hidden>
+                {buttonLabel}
+              </span>
+            </span>
+          )}
+        </button>
       </form>
 
       <AnimatePresence>

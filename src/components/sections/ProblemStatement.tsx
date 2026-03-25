@@ -12,7 +12,7 @@ export function ProblemStatement() {
   return (
     <AnimatedSection className="bg-page-warm py-20 md:py-[80px] px-6 lg:px-16">
       <div className="max-w-content mx-auto">
-        <h2 className="font-heading text-[36px] md:text-[48px] lg:text-[56px] font-normal tracking-heading leading-[110%] text-espresso text-center mb-16">
+        <h2 className="font-heading text-[28px] md:text-[38px] lg:text-[46px] font-normal tracking-heading leading-[110%] text-espresso text-center mb-16">
           {t("headline")}
         </h2>
 
