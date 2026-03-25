@@ -1,0 +1,89 @@
+{
+  "nav": {
+    "product": "Product",
+    "howItWorks": "How It Works",
+    "useCases": "Use Cases",
+    "faq": "FAQ",
+    "cta": "Get Early Access"
+  },
+  "hero": {
+    "kicker": "AI-Powered Clinical Evidence",
+    "headline": "Never miss a breakthrough that could save lives",
+    "subhead": "Personalized evidence delivered daily. AI-summarized. Always grounded in source papers.",
+    "ctaPrimary": "Get Early Access",
+    "ctaSecondary": "See how it works",
+    "microcopy": "Free to start. No credit card required."
+  },
+  "problem": {
+    "headline": "Clinicians are drowning in research they can't keep up with",
+    "stat1": { "value": "3,000+", "label": "medical papers published daily" },
+    "stat2": { "value": "17", "label": "years average delay for breakthroughs to reach patients" },
+    "stat3": { "value": "250,000", "label": "American lives lost annually to outdated practices" },
+    "quote": "A patient suffered for 10 years with treatment-resistant depression. The Stanford SAINT protocol achieved 90% remission in 5 days — but her doctor never knew it existed."
+  },
+  "showcase": {
+    "feed": {
+      "headline": "Your Personalized Evidence Feed",
+      "desc1": "Thousands of papers filtered to what matters to you",
+      "desc2": "AI-summarized TL;DR on every card",
+      "desc3": "Click any card for a full paper digest",
+      "desc4": "Learns from your behavior — gets smarter every day",
+      "desc5": "Auto-evaluates study rigor and trustworthiness",
+      "digestTooltip": "Click to see the full paper digest"
+    },
+    "flywheel": "Feed informs AI ⇄ AI informs Feed",
+    "agent": {
+      "headline": "Your AI Clinical Agent",
+      "desc1": "Persistent memory across sessions",
+      "desc2": "Every claim grounded with citations",
+      "desc3": "Understands your clinical context",
+      "desc4": "Learns from your feed interactions too",
+      "desc5": "Transparent reasoning — watch it search, screen, and synthesize",
+      "online": "ONLINE",
+      "remembers": "Remembers your context"
+    },
+    "intel": {
+      "headline": "Intelligence you can trust",
+      "card1": { "title": "Evidence-Based", "desc": "Auto-evaluates scientific rigor, methodology quality, and clinical trustworthiness" },
+      "card2": { "title": "Precision-Personalized", "desc": "Tailored to your specialty, patients, and clinical context" },
+      "card3": { "title": "Always Up-to-Date", "desc": "Continuously tracking latest research worldwide, new studies indexed as they publish" },
+      "card4": { "title": "Self-Improving", "desc": "Feed behavior informs AI, AI conversations refine feed — the flywheel gets smarter" }
+    }
+  },
+  "howItWorks": {
+    "headline": "How It Works",
+    "step1": { "title": "Tell us your focus", "desc": "Set your specialty, interests, and clinical questions" },
+    "step2": { "title": "Get your daily digest", "desc": "AI curates and summarizes the evidence that matters to you" },
+    "step3": { "title": "Ask anything", "desc": "Dive deeper with AI Q&A grounded in cited sources" }
+  },
+  "useCases": {
+    "headline": "Built for Every Clinician",
+    "case1": { "title": "Attending Physicians", "quote": "Balancing 30+ patients a week, I need to catch new treatments and updated guidelines — without reading 50 papers." },
+    "case2": { "title": "Residents & Fellows", "quote": "Staying current across multiple rotations with limited time. SciSpark keeps me informed without the overwhelm." },
+    "case3": { "title": "Clinical Researchers", "quote": "Tracking breakthroughs across adjacent fields and disciplines — I can't afford to miss what's happening outside my niche." }
+  },
+  "faq": {
+    "headline": "Frequently Asked Questions",
+    "q1": { "q": "How does SciSpark personalize my feed?", "a": "SciSpark learns from your specialty, interests, and behavior — what you read, like, save, and skip. The more you use it, the more relevant your feed becomes." },
+    "q2": { "q": "Is the AI content reliable for clinical decisions?", "a": "Every AI-generated summary and response is grounded in cited source papers. We auto-evaluate study rigor, methodology quality, and clinical trustworthiness so you can assess the evidence yourself." },
+    "q3": { "q": "What specialties are supported?", "a": "SciSpark covers all major medical specialties and indexes research from thousands of journals worldwide. You can customize your interests at any granularity." },
+    "q4": { "q": "How is this different from PubMed or UpToDate?", "a": "PubMed is a search engine — you have to know what to look for. UpToDate is expert-curated but slow to update. SciSpark is a personalized feed that comes to you, powered by AI that learns your context and evaluates evidence quality in real time." }
+  },
+  "finalCta": {
+    "headline": "Better evidence. Better care.",
+    "subhead": "Join hundreds of clinicians getting early access to SciSpark.",
+    "cta": "Join Early Access"
+  },
+  "email": {
+    "placeholder": "Enter your email",
+    "success": "You're on the list! We'll be in touch soon.",
+    "errorInvalid": "Please enter a valid email",
+    "errorDuplicate": "This email is already on the waitlist."
+  },
+  "footer": {
+    "copyright": "© 2026 SciSpark. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact"
+  }
+}
