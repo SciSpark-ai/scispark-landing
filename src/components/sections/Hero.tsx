@@ -6,6 +6,35 @@ import { EmailCapture } from "@/components/EmailCapture";
 import { BrowserMockup } from "./BrowserMockup";
 import { heroElement } from "@/components/motion/variants";
 
+function HeroMockupContent() {
+  const miniPapers = [
+    { color: "#6b7280", specialty: "PSYCHIATRY", title: "Stanford's 5-Day Brain Stimulation Protocol", journal: "Am J Psychiatry · 2020", stars: 5 },
+    { color: "#ea580c", specialty: "CARDIOLOGY", title: "GLP-1 Agonists Reduce MACE by 14%", journal: "NEJM · 2025", stars: 5 },
+    { color: "#d97706", specialty: "ONCOLOGY", title: "CAR-T Shows Durable Remission in Lymphoma", journal: "Lancet Oncol · 2025", stars: 4 },
+  ];
+
+  return (
+    <div className="p-4 bg-page-bg flex gap-3">
+      {miniPapers.map((paper, i) => (
+        <div key={i} className="flex-1 bg-white rounded-xl overflow-hidden border border-border-warm/30">
+          <div className="h-8" style={{ backgroundColor: paper.color }}>
+            <span className="text-white/80 text-[9px] font-medium uppercase tracking-wider px-3 leading-8 block">{paper.specialty}</span>
+          </div>
+          <div className="p-3">
+            <p className="font-heading text-xs font-normal text-espresso leading-tight line-clamp-2">{paper.title}</p>
+            <p className="text-[9px] text-muted-text mt-1">{paper.journal}</p>
+            <div className="flex gap-0.5 mt-2">
+              {Array.from({ length: 5 }).map((_, j) => (
+                <div key={j} className={`w-2 h-2 rounded-full ${j < paper.stars ? "bg-warm-tan" : "bg-border-warm/50"}`} />
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Hero() {
   const t = useTranslations("hero");
 
@@ -62,7 +91,9 @@ export function Hero() {
         </motion.div>
 
         {/* Browser mockup below the fold */}
-        <BrowserMockup />
+        <BrowserMockup>
+          <HeroMockupContent />
+        </BrowserMockup>
       </div>
     </section>
   );
