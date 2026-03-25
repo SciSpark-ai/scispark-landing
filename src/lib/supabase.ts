@@ -1,9 +1,22 @@
-// src/lib/supabase.ts
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
 export async function submitToWaitlist(
   email: string,
-  source: string
+  source: "hero" | "footer-cta"
 ): Promise<{ success: boolean; duplicate?: boolean }> {
-  // TODO: implement Supabase integration in Task 13
-  console.log("Waitlist submission:", { email, source });
-  return { success: true };
+  try {
+    const { error } = await supabase.from("waitlist").insert({ email, source });
+    if (error) {
+      if (error.code === "23505") return { success: false, duplicate: true };
+      return { success: false };
+    }
+    return { success: true };
+  } catch {
+    return { success: false };
+  }
 }
