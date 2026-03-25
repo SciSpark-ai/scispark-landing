@@ -18,9 +18,23 @@ const halant = Halant({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://scispark.ai"),
   title: "SciSpark — Never miss a breakthrough that could save lives",
   description:
-    "AI-powered clinical evidence assistant. Personalized research delivered daily, AI-summarized, always grounded in source papers.",
+    "AI-powered clinical evidence assistant for healthcare professionals. Personalized research delivered daily, AI-summarized, always grounded in source papers.",
+  openGraph: {
+    title: "SciSpark — AI Clinical Evidence Assistant",
+    description:
+      "Personalized evidence delivered daily. AI-summarized. Always grounded in source papers.",
+    type: "website",
+    images: ["/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SciSpark — Never miss a breakthrough that could save lives",
+    description:
+      "AI-powered clinical evidence for healthcare professionals.",
+  },
 };
 
 export default async function RootLayout({
