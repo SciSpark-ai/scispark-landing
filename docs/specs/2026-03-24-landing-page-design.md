@@ -121,13 +121,21 @@ Seven sections in scroll order:
 - Chat mockup on warm beige background (#efe7dd) with subtle shadow
   - Header: SciSpark AI logo + "Remembers your context" + ONLINE indicator
   - Sample conversation about SAINT protocol vs standard TMS for treatment-resistant patients
-  - AI response includes bold stats, citation chips (Cole et al. 2020, Am J Psychiatry)
+  - **Animated agent reasoning process:** After the user's question appears, the mockup shows the agent conducting a fully automated, lightweight review in real time:
+    1. **Searching** — "Searching 12,847 papers..." with a spinning/progress indicator
+    2. **Screening** — "Screening 23 relevant results..." with papers briefly flashing/filtering
+    3. **Extracting** — "Extracting data from 6 key studies..." with citation chips appearing one by one
+    4. **Reasoning** — "Synthesizing evidence..." with a brief thinking indicator
+    5. **Answer** — The final AI response types in with bold stats and citation chips (Cole et al. 2020, Am J Psychiatry)
+  - Each step is a small status line that appears, stays briefly, then transitions to the next — creating a visible "agent at work" sequence before the answer appears
+  - The whole sequence auto-plays when the section scrolls into view (triggered once)
   - Follow-up question visible, input field at bottom
 - Description highlights:
   - Persistent memory across sessions
   - Every claim grounded with citations
   - Understands your clinical context
   - Learns from your feed interactions too
+  - **Transparent reasoning** — watch the agent search, screen, and synthesize before answering
 
 #### Part C: Intelligence Layer ("What Makes SciSpark Different")
 - Warm cream background (#f6f0e9) with subtle grain overlay

@@ -719,6 +719,7 @@ Create `messages/en.json`:
       "desc2": "Every claim grounded with citations",
       "desc3": "Understands your clinical context",
       "desc4": "Learns from your feed interactions too",
+      "desc5": "Transparent reasoning — watch it search, screen, and synthesize",
       "online": "ONLINE",
       "remembers": "Remembers your context"
     },
@@ -814,6 +815,7 @@ Create `messages/zh.json` with the same structure, translated to Chinese. (Full 
       "desc2": "每个观点都有引文支撑",
       "desc3": "理解您的临床背景",
       "desc4": "从您的阅读行为中持续学习",
+      "desc5": "透明推理——看它搜索、筛选、综合分析的全过程",
       "online": "在线",
       "remembers": "记住您的背景"
     },
@@ -1999,34 +2001,89 @@ export function FlyWheelDivider() {
 
 Create `src/components/sections/product-showcase/ChatMockup.tsx`:
 
+This is the most complex animation on the page. After the user's question appears, the agent shows a visible reasoning process (search → screen → extract → reason → answer) before the final response types in.
+
 ```tsx
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
-import { chatSequence, messageAppear } from "@/components/motion/variants";
-import { Send } from "lucide-react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Send, Search, Filter, FileText, Brain, CheckCircle2 } from "lucide-react";
 
-const chatMessages = [
-  {
-    role: "user" as const,
-    text: "What's the latest evidence on TMS protocols for treatment-resistant depression? My patient has failed two SSRIs and one SNRI.",
-  },
-  {
-    role: "ai" as const,
-    text: "Based on recent evidence, the **Stanford SAINT protocol** shows the strongest results for treatment-resistant depression. Key findings:\n\n• **90.5% remission rate** in an open-label study (Cole et al. 2020, Am J Psychiatry)\n• Uses fMRI-guided targeting of left DLPFC\n• 5-day accelerated protocol (50 sessions total)\n• Significantly faster than standard rTMS (6 weeks)",
-  },
-  {
-    role: "user" as const,
-    text: "How does it compare to standard rTMS in terms of durability?",
-  },
+// Agent reasoning steps — each shown sequentially before the answer
+const reasoningSteps = [
+  { icon: Search, text: "Searching 12,847 papers...", duration: 1200 },
+  { icon: Filter, text: "Screening 23 relevant results...", duration: 1000 },
+  { icon: FileText, text: "Extracting data from 6 key studies...", duration: 1400 },
+  { icon: Brain, text: "Synthesizing evidence...", duration: 1000 },
 ];
+
+const aiAnswer = `Based on recent evidence, the **Stanford SAINT protocol** shows the strongest results for treatment-resistant depression. Key findings:
+
+• **90.5% remission rate** in an open-label study (Cole et al. 2020, Am J Psychiatry)
+• Uses fMRI-guided targeting of left DLPFC
+• 5-day accelerated protocol (50 sessions total)
+• Significantly faster than standard rTMS (6 weeks)`;
+
+const userQuestion = "What's the latest evidence on TMS protocols for treatment-resistant depression? My patient has failed two SSRIs and one SNRI.";
+
+const followUpQuestion = "How does it compare to standard rTMS in terms of durability?";
+
+type Phase = "idle" | "user-q" | "reasoning" | "answer" | "followup";
 
 export function ChatMockup() {
   const t = useTranslations("showcase.agent");
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [stepComplete, setStepComplete] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    if (!inView) return;
+
+    // Start sequence: show user question after 0.8s
+    const t1 = setTimeout(() => setPhase("user-q"), 800);
+
+    // Start reasoning after question appears (1.5s for question to settle)
+    const t2 = setTimeout(() => {
+      setPhase("reasoning");
+      setCurrentStep(0);
+      setStepComplete([]);
+    }, 2300);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [inView]);
+
+  // Advance through reasoning steps
+  useEffect(() => {
+    if (phase !== "reasoning") return;
+    if (currentStep >= reasoningSteps.length) {
+      // All steps done — show answer
+      const t = setTimeout(() => setPhase("answer"), 400);
+      return () => clearTimeout(t);
+    }
+
+    const duration = reasoningSteps[currentStep].duration;
+    const timer = setTimeout(() => {
+      setStepComplete((prev) => [...prev, true]);
+      setCurrentStep((prev) => prev + 1);
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [phase, currentStep]);
+
+  // Show follow-up after answer
+  useEffect(() => {
+    if (phase !== "answer") return;
+    const timer = setTimeout(() => setPhase("followup"), 3000);
+    return () => clearTimeout(timer);
+  }, [phase]);
 
   return (
-    <div className="bg-card-surface rounded-card overflow-hidden border border-border-warm/30 shadow-lg">
+    <div ref={ref} className="bg-card-surface rounded-card overflow-hidden border border-border-warm/30 shadow-lg">
       {/* Chat header */}
       <div className="flex items-center justify-between px-5 py-3 bg-light-surface border-b border-border-warm/20">
         <div className="flex items-center gap-2">
@@ -2044,52 +2101,131 @@ export function ChatMockup() {
         </div>
       </div>
 
-      {/* Messages */}
-      <motion.div
-        variants={chatSequence}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="p-4 space-y-4 min-h-[320px]"
-      >
-        {chatMessages.map((msg, i) => (
-          <motion.div
-            key={i}
-            variants={messageAppear}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-[170%] ${
-                msg.role === "user"
-                  ? "bg-card-surface text-espresso rounded-br-md"
-                  : "bg-white text-espresso rounded-bl-md shadow-sm"
-              }`}
+      {/* Messages area */}
+      <div className="p-4 space-y-4 min-h-[380px]">
+        {/* User question */}
+        <AnimatePresence>
+          {phase !== "idle" && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-end"
             >
-              {msg.role === "ai" ? (
-                <div
-                  className="whitespace-pre-line"
-                  dangerouslySetInnerHTML={{
-                    __html: msg.text
-                      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-espresso">$1</strong>')
-                      .replace(/• /g, '<span class="text-orange mr-1">•</span> '),
-                  }}
-                />
-              ) : (
-                msg.text
-              )}
-            </div>
-          </motion.div>
-        ))}
+              <div className="max-w-[85%] px-4 py-3 rounded-2xl rounded-br-md bg-card-surface text-espresso text-sm leading-[170%]">
+                {userQuestion}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Typing indicator */}
-        <motion.div variants={messageAppear} className="flex justify-start">
-          <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm flex gap-1">
-            <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:0ms]" />
-            <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:150ms]" />
-            <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:300ms]" />
-          </div>
-        </motion.div>
-      </motion.div>
+        {/* Agent reasoning steps */}
+        <AnimatePresence>
+          {(phase === "reasoning" || phase === "answer" || phase === "followup") && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-start"
+            >
+              <div className="max-w-[90%] bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm">
+                <div className="space-y-2 mb-2">
+                  {reasoningSteps.map((step, i) => {
+                    const isActive = phase === "reasoning" && i === currentStep;
+                    const isDone = stepComplete[i] || phase === "answer" || phase === "followup";
+                    const isVisible = i <= currentStep || phase === "answer" || phase === "followup";
+
+                    if (!isVisible) return null;
+
+                    const Icon = isDone ? CheckCircle2 : step.icon;
+
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: isDone && phase !== "reasoning" ? 0.4 : 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex items-center gap-2"
+                      >
+                        <Icon
+                          className={`w-3.5 h-3.5 flex-shrink-0 ${
+                            isDone ? "text-green-500" : "text-orange"
+                          } ${isActive ? "animate-pulse" : ""}`}
+                        />
+                        <span className={`text-xs ${isDone ? "text-muted/60" : "text-muted"}`}>
+                          {step.text}
+                        </span>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* AI answer (appears after reasoning) */}
+                <AnimatePresence>
+                  {(phase === "answer" || phase === "followup") && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="border-t border-border-warm/20 pt-3 mt-2"
+                    >
+                      <div
+                        className="text-sm leading-[170%] text-espresso whitespace-pre-line"
+                        dangerouslySetInnerHTML={{
+                          __html: aiAnswer
+                            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-espresso">$1</strong>')
+                            .replace(/• /g, '<span class="text-orange mr-1">•</span> '),
+                        }}
+                      />
+                      {/* Citation chips */}
+                      <div className="flex gap-2 mt-3 flex-wrap">
+                        <span className="text-[10px] px-2 py-1 rounded-full bg-light-surface text-muted border border-border-warm/30">
+                          Cole et al. 2020
+                        </span>
+                        <span className="text-[10px] px-2 py-1 rounded-full bg-light-surface text-muted border border-border-warm/30">
+                          Am J Psychiatry
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Follow-up question */}
+        <AnimatePresence>
+          {phase === "followup" && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex justify-end"
+            >
+              <div className="max-w-[85%] px-4 py-3 rounded-2xl rounded-br-md bg-card-surface text-espresso text-sm leading-[170%]">
+                {followUpQuestion}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Typing indicator (shows after follow-up) */}
+        <AnimatePresence>
+          {phase === "followup" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="flex justify-start"
+            >
+              <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm flex gap-1">
+                <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:0ms]" />
+                <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:150ms]" />
+                <span className="w-2 h-2 rounded-full bg-muted/40 animate-bounce [animation-delay:300ms]" />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Input bar */}
       <div className="px-4 pb-4">
@@ -2104,6 +2240,18 @@ export function ChatMockup() {
   );
 }
 ```
+
+**Animation sequence (auto-plays on scroll into view):**
+1. User question appears (0.8s delay)
+2. Agent reasoning begins (1.5s after question):
+   - "Searching 12,847 papers..." with pulsing Search icon (1.2s)
+   - "Screening 23 relevant results..." with Filter icon (1.0s)
+   - "Extracting data from 6 key studies..." with FileText icon (1.4s)
+   - "Synthesizing evidence..." with Brain icon (1.0s)
+   - Each step gets a green checkmark when complete, then fades slightly
+3. Answer reveals below the reasoning steps with a height animation (citation chips appear)
+4. Follow-up question from user appears (3s after answer)
+5. Typing indicator shows (agent is "thinking" again)
 
 - [ ] **Step 3: Build AIAgent section**
 
@@ -2144,7 +2292,7 @@ export function AIAgent() {
               {t("headline")}
             </h2>
             <ul className="space-y-4">
-              {(["desc1", "desc2", "desc3", "desc4"] as const).map((key) => (
+              {(["desc1", "desc2", "desc3", "desc4", "desc5"] as const).map((key) => (
                 <li key={key} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange mt-2.5 flex-shrink-0" />
                   <span className="font-body text-lg text-muted leading-[150%]">{t(key)}</span>
