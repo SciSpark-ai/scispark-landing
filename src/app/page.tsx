@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/sections/Navigation";
 import { Hero } from "@/components/sections/Hero";
 import { ProblemStatement } from "@/components/sections/ProblemStatement";
-import { EvidenceFeed } from "@/components/sections/product-showcase/EvidenceFeed";
+import { ProductShowcase } from "@/components/sections/product-showcase";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Navigation />
       <Hero />
       <ProblemStatement />
-      <EvidenceFeed />
+      <ProductShowcase />
     </main>
   );
 }
