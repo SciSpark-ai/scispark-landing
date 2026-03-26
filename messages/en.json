@@ -26,10 +26,9 @@
       "headline": "Your Personalized Evidence Feed",
       "desc1": "Thousands of papers filtered to what matters to you",
       "desc2": "AI-summarized TL;DR on every card",
-      "desc3": "Click any card for a full paper digest",
+      "desc3": "Swipe through cards to explore your daily evidence",
       "desc4": "Learns from your behavior — gets smarter every day",
       "desc5": "Auto-evaluates study rigor and trustworthiness",
-      "digestTooltip": "Click to see the full paper digest"
     },
     "flywheel": "Feed informs AI ⇄ AI informs Feed",
     "agent": {
@@ -48,6 +47,13 @@
       "card2": { "title": "Precision-Personalized", "desc": "Tailored to your specialty, patients, and clinical context" },
       "card3": { "title": "Always Up-to-Date", "desc": "Continuously tracking latest research worldwide, new studies indexed as they publish" },
       "card4": { "title": "Self-Improving", "desc": "Feed behavior informs AI, AI conversations refine feed — the flywheel gets smarter" }
+    },
+    "digest": {
+      "headline": "Open any paper. Get the full picture in seconds.",
+      "desc1": "AI-generated lay summary and original abstract toggle",
+      "desc2": "Structured key breakpoints: research question, data, and results",
+      "desc3": "Ask AI follow-up questions — answered in context with citations",
+      "desc4": "Figure digest with key charts and tables from the paper"
     }
   },
   "howItWorks": {
