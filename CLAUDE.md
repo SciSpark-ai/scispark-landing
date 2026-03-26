@@ -26,7 +26,7 @@ New landing page for SciSpark — an AI-driven clinical evidence assistant for h
 
 - **All light backgrounds** — no dark sections. Dark mode deferred to later.
 - **Tailwind v4** — colors/fonts/radii defined as CSS custom properties in globals.css `@theme inline` block, not in a JS config file.
-- **Interactive product showcase** — Paper cards in the feed are clickable; they expand into a digest view with Framer Motion layoutId transition.
+- **Interactive product showcase** — Evidence feed uses a stacked card deck with hover-to-surface, drag-swipe, and auto-play. Paper Digest is showcased in a dedicated section with a static browser mockup.
 - **AI agent reasoning animation** — ChatMockup auto-plays a 5-phase sequence (search → screen → extract → synthesize → answer) when scrolled into view.
 - **Supabase credentials** — stored in `.env.local` (gitignored), copied from `~/Documents/sci-spark-discover-2/.env`.
 
@@ -35,7 +35,7 @@ New landing page for SciSpark — an AI-driven clinical evidence assistant for h
 1. Navigation (fixed, glassmorphism)
 2. Hero (word reveal + browser mockup + email capture)
 3. Problem Statement (animated stat cards)
-4. Product Showcase: Evidence Feed → Flywheel Divider → AI Agent → Intelligence Layer
+4. Product Showcase: Evidence Feed (card stack) → Paper Digest Showcase → Flywheel Divider → AI Agent → Intelligence Layer
 5. How It Works (3 steps)
 6. Use Cases (3 personas)
 7. FAQ (accordion)
