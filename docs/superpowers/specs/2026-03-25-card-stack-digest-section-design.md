@@ -20,6 +20,7 @@ Two changes to the Product Showcase area:
 
 - Cards stacked with slight rotation and positional offset
 - 3–4 cards visible at once: top card centered (rotation 0°), back cards peek on left/right with slight rotation (roughly -8° to +5°)
+- **Back cards are slightly blurred (`filter: blur(2px)`) and dimmed (`opacity: 0.7`)** — creates depth/focus effect, top card is fully sharp and opaque
 - Warm beige card surfaces, `rounded-card` corners, consistent with existing PaperCard styling
 - Nav arrow buttons centered below the stack — circular, subtle border, `‹` / `›` icons with `aria-label="Previous card"` / `aria-label="Next card"` and visible focus rings
 - Stack container: min-height ~400px, card width stays at 320px. Container must account for rotated cards extending beyond card width (~380px effective width with rotation offsets)
@@ -28,7 +29,7 @@ Two changes to the Product Showcase area:
 
 | Trigger | Behavior |
 |---------|----------|
-| **Hover** | Moving cursor over a partially-visible back card animates it to the top of the stack |
+| **Hover** | Moving cursor over a partially-visible back card: the current top card **slides off to the side** (exits left or right with rotation), and the hovered card animates to center position (rotation 0°, full opacity, no blur). Other back cards reposition accordingly |
 | **Arrow buttons** | `‹` / `›` buttons below the stack cycle through cards. Keyboard-focusable with visible focus rings |
 | **Drag-swipe** | Touch/mouse drag to swipe the top card away, revealing the next (mobile-friendly) |
 | **Auto-play** | Stack auto-rotates every ~4s when idle. Pauses on hover/touch. Resumes after ~3s of inactivity. **Disabled when `prefers-reduced-motion` is set.** |
@@ -44,8 +45,9 @@ Stays 2-column: text + bullet points on left, card stack on right.
 ### Animation Details
 
 - **Card-to-top transitions (hover, arrow cycle):** Use Framer Motion spring physics — `type: "spring", stiffness: 300, damping: 30`
+- **Top card dismissal:** The outgoing top card slides to the side (e.g., `x: ±200, rotate: ±12°`) while simultaneously gaining blur and dimming to match back-card treatment, then settles into its new back-card position
 - **Scroll-reveal entrance:** Use tween with existing `EASE_CARD` (`[0.22, 1, 0.36, 1]`), 500ms, matching site conventions
-- Cards transition `x`, `y`, `rotate`, and `boxShadow` simultaneously
+- Cards transition `x`, `y`, `rotate`, `opacity`, `filter` (blur), and `boxShadow` simultaneously
 - `zIndex` is set discretely (not animated) — update immediately when a card moves to a new stack position, before the positional animation begins
 
 ### Mobile / Responsive
