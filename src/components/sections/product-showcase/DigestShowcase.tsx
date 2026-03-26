@@ -83,13 +83,13 @@ export function DigestShowcase() {
                     </div>
                     <div className="mt-3 flex items-center gap-3">
                       <PlaceholderLine width="18%" />
-                      <span className="text-sm text-orange font-medium">Am J Psychiatry</span>
+                      <span className="text-sm text-orange font-medium">Journal Name</span>
                       <PlaceholderLine width="12%" />
                     </div>
                     {/* Author pills */}
                     <div className="flex gap-2 mt-3">
-                      {["E. J. Cole", "K. H. Stimpson", "B. S. Bentzley"].map((a) => (
-                        <span key={a} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">{a}</span>
+                      {["Author Name", "Author Name", "Author Name"].map((a, i) => (
+                        <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">{a}</span>
                       ))}
                     </div>
                     {/* Action bar */}
