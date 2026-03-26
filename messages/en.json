@@ -28,7 +28,7 @@
       "desc2": "AI-summarized TL;DR on every card",
       "desc3": "Swipe through cards to explore your daily evidence",
       "desc4": "Learns from your behavior — gets smarter every day",
-      "desc5": "Auto-evaluates study rigor and trustworthiness",
+      "desc5": "Auto-evaluates study rigor and trustworthiness"
     },
     "flywheel": "Feed informs AI ⇄ AI informs Feed",
     "agent": {
