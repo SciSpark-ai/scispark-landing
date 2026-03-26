@@ -1,34 +1,15 @@
 "use client";
-import { motion } from "framer-motion";
 import { Star, Heart, Bookmark, Clock, MoreHorizontal } from "lucide-react";
 import { GrainOverlay } from "@/components/GrainOverlay";
 import type { PaperCardData } from "./paper-data";
 
 interface PaperCardProps {
   paper: PaperCardData;
-  onCardClick?: (paper: PaperCardData) => void;
-  showTooltip?: boolean;
 }
 
-export function PaperCard({ paper, onCardClick, showTooltip = true }: PaperCardProps) {
+export function PaperCard({ paper }: PaperCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -4, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      onClick={() => onCardClick?.(paper)}
-      className="relative flex-shrink-0 w-[320px] bg-white rounded-card overflow-hidden border border-[#e8d3c0]/30 cursor-pointer group"
-    >
-      {/* Tooltip */}
-      {showTooltip && (
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-[#2b180a] text-white text-xs px-3 py-1.5 rounded-btn whitespace-nowrap">
-            Click to see the full paper digest
-            {/* Arrow */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[#2b180a]" />
-          </div>
-        </div>
-      )}
-
+    <div className="relative w-[320px] lg:w-[320px] bg-white rounded-card overflow-hidden border border-[#e8d3c0]/30">
       {/* Colored header bar */}
       <div
         className="h-12 relative flex items-center px-4"
@@ -98,37 +79,21 @@ export function PaperCard({ paper, onCardClick, showTooltip = true }: PaperCardP
 
           {/* Action icons */}
           <div className="flex items-center gap-2 text-[#94877c]">
-            <button
-              aria-label="Like"
-              className="hover:text-[#f97316] transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <button aria-label="Like" className="hover:text-[#f97316] transition-colors" onClick={(e) => e.stopPropagation()}>
               <Heart size={15} />
             </button>
-            <button
-              aria-label="Save"
-              className="hover:text-[#f97316] transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <button aria-label="Save" className="hover:text-[#f97316] transition-colors" onClick={(e) => e.stopPropagation()}>
               <Bookmark size={15} />
             </button>
-            <button
-              aria-label="Read later"
-              className="hover:text-[#f97316] transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <button aria-label="Read later" className="hover:text-[#f97316] transition-colors" onClick={(e) => e.stopPropagation()}>
               <Clock size={15} />
             </button>
-            <button
-              aria-label="More"
-              className="hover:text-[#f97316] transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <button aria-label="More" className="hover:text-[#f97316] transition-colors" onClick={(e) => e.stopPropagation()}>
               <MoreHorizontal size={15} />
             </button>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
