@@ -76,20 +76,34 @@ export function DigestShowcase() {
 
                   {/* ── Paper Header ── */}
                   <div>
-                    <PlaceholderLine width="30%" />
-                    <div className="mt-3 space-y-2">
-                      <div className="h-[14px] rounded-sm bg-[#c4b8aa] w-[90%]" />
-                      <div className="h-[14px] rounded-sm bg-[#c4b8aa] w-[55%]" />
+                    {/* Title (2 lines) */}
+                    <div className="space-y-2">
+                      <div className="h-[16px] rounded-sm bg-[#c4b8aa] w-[95%]" />
+                      <div className="h-[16px] rounded-sm bg-[#c4b8aa] w-[50%]" />
                     </div>
-                    <div className="mt-3 flex items-center gap-3">
-                      <PlaceholderLine width="18%" />
-                      <span className="text-sm text-orange font-medium">Journal Name</span>
+                    {/* Original title */}
+                    <div className="mt-2.5">
+                      <PlaceholderLine width="75%" />
+                    </div>
+                    {/* Specialty tag */}
+                    <div className="mt-1.5">
                       <PlaceholderLine width="12%" />
+                    </div>
+                    {/* Published in Journal · Year · Citations + View Full Paper */}
+                    <div className="mt-3 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs text-[#94877c]">Published in</span>
+                        <span className="text-xs text-orange font-medium">Journal Name</span>
+                        <span className="text-xs text-[#94877c]">2024 &middot; 487 citations</span>
+                      </div>
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <ExternalLink size={12} /> View Full Paper
+                      </span>
                     </div>
                     {/* Author pills */}
                     <div className="flex gap-2 mt-3">
-                      {["Author Name", "Author Name", "Author Name"].map((a, i) => (
-                        <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">{a}</span>
+                      {[0, 1, 2, 3].map((i) => (
+                        <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">Author Name</span>
                       ))}
                     </div>
                     {/* Action bar */}
@@ -105,9 +119,6 @@ export function DigestShowcase() {
                       </span>
                       <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
                         <Share2 size={12} /> Share
-                      </span>
-                      <span className="ml-auto flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
-                        <ExternalLink size={12} /> View Full Paper
                       </span>
                     </div>
                   </div>
