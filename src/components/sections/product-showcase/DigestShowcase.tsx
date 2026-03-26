@@ -1,15 +1,32 @@
 "use client";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, ThumbsUp, ThumbsDown, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EASE_CARD } from "@/components/motion/variants";
 import { BrowserMockup } from "@/components/sections/BrowserMockup";
-import { samplePapers } from "./paper-data";
 
-// Use the Stanford TMS paper for the mockup.
+// Wireframe placeholder line component
+function PlaceholderLine({ width = "100%" }: { width?: string }) {
+  return (
+    <div
+      className="h-[7px] rounded-sm bg-[#ddd5cb]"
+      style={{ width }}
+    />
+  );
+}
+
+function PlaceholderLines({ count = 3, className = "" }: { count?: number; className?: string }) {
+  const widths = ["100%", "92%", "78%", "85%", "65%", "90%", "70%"];
+  return (
+    <div className={`space-y-2 ${className}`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <PlaceholderLine key={i} width={widths[i % widths.length]} />
+      ))}
+    </div>
+  );
+}
+
 // Mockup content is intentionally English-only (product UI preview) — not localized.
-const paper = samplePapers[0];
-
 export function DigestShowcase() {
   const t = useTranslations("showcase.digest");
 
@@ -42,7 +59,7 @@ export function DigestShowcase() {
             </ul>
           </motion.div>
 
-          {/* Right column — browser mockup of digest */}
+          {/* Right column — browser mockup wireframe */}
           <motion.div
             initial={{ opacity: 0, x: 148 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -50,81 +67,157 @@ export function DigestShowcase() {
             transition={{ duration: 0.7, ease: EASE_CARD }}
           >
             <BrowserMockup>
-              {/* Digest content */}
-              <div className="max-h-[480px] overflow-hidden">
-                {/* Specialty header bar */}
-                <div
-                  className="h-10 flex items-center px-5"
-                  style={{ backgroundColor: paper.specialtyColor }}
-                >
-                  <span className="text-white/90 text-xs font-medium uppercase tracking-wider">
-                    {paper.specialty}
-                  </span>
-                </div>
+              <div className="relative max-h-[560px] overflow-hidden">
+                {/* Scrollable content area */}
+                <div className="p-4 space-y-3 pb-16">
 
-                <div className="p-5">
-                  {/* Title */}
-                  <h3 className="font-heading text-xl font-normal leading-[130%] text-[#2b180a] mb-1.5">
-                    {paper.title}
-                  </h3>
-                  <p className="text-xs text-[#94877c] mb-5">
-                    {paper.journal} &middot; {paper.date}
-                  </p>
-
-                  {/* AI Summary block */}
-                  <div className="bg-[#faf6f2] rounded-faq p-4 mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Sparkles size={16} className="text-[#f97316]" />
-                      <span className="font-body font-semibold text-sm text-[#2b180a]">
-                        AI Summary
+                  {/* ── Paper Header ── */}
+                  <div>
+                    <PlaceholderLine width="35%" />
+                    <div className="mt-2.5 space-y-1.5">
+                      <div className="h-[10px] rounded-sm bg-[#c4b8aa] w-[90%]" />
+                      <div className="h-[10px] rounded-sm bg-[#c4b8aa] w-[60%]" />
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <PlaceholderLine width="20%" />
+                      <span className="text-[8px] text-orange font-medium">Am J Psychiatry</span>
+                      <PlaceholderLine width="15%" />
+                    </div>
+                    {/* Author pills */}
+                    <div className="flex gap-1.5 mt-2">
+                      {["Author 1", "Author 2", "Author 3"].map((a) => (
+                        <span key={a} className="text-[7px] px-2 py-0.5 rounded-full border border-[#e8d3c0] text-[#94877c]">{a}</span>
+                      ))}
+                    </div>
+                    {/* Action bar */}
+                    <div className="flex items-center gap-2 mt-2.5">
+                      <span className="flex items-center gap-1 text-[7px] px-2 py-1 rounded-full bg-orange text-white">
+                        <Heart size={7} /> Like
+                      </span>
+                      <span className="flex items-center gap-1 text-[7px] px-2 py-1 rounded-full bg-orange text-white">
+                        <Bookmark size={7} /> Save
+                      </span>
+                      <span className="flex items-center gap-1 text-[7px] px-2 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <Clock size={7} /> Read Later
+                      </span>
+                      <span className="flex items-center gap-1 text-[7px] px-2 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <Share2 size={7} /> Share
+                      </span>
+                      <span className="ml-auto flex items-center gap-1 text-[7px] px-2 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <ExternalLink size={7} /> View Full Paper
                       </span>
                     </div>
-
-                    {/* Tab pills */}
-                    <div className="flex gap-2 mb-3">
-                      <span className="text-xs px-3 py-1 rounded-pill bg-[#f97316] text-white">
-                        Lay Summary
-                      </span>
-                      <span className="text-xs px-3 py-1 rounded-pill bg-[#e8d3c0]/50 text-[#94877c]">
-                        Original Abstract
-                      </span>
-                    </div>
-
-                    <p className="text-sm text-[#94877c] leading-[170%]">
-                      {paper.summary}
-                    </p>
                   </div>
 
-                  {/* Key Breakpoints */}
-                  <div className="bg-[#faf6f2] rounded-faq p-4 mb-4">
-                    <h4 className="font-body font-semibold text-sm text-[#2b180a] mb-3">
-                      Key Breakpoints
-                    </h4>
-                    <ol className="space-y-2.5">
-                      {[
-                        { label: "Research Question", text: "Does fMRI-guided accelerated TMS achieve rapid remission in treatment-resistant depression?" },
-                        { label: "Data & Sample", text: "Multi-center RCT with pre-specified endpoints and appropriate statistical power." },
-                        { label: "Key Results", text: "90.5% remission rate within 5 days of the accelerated SAINT protocol." },
-                      ].map((item, i) => (
-                        <li key={i} className="flex gap-2.5">
-                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#f97316] text-white text-[10px] font-bold flex items-center justify-center mt-0.5">
+                  {/* ── AI Summary ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Sparkles size={10} className="text-orange" />
+                      <span className="font-body font-semibold text-[9px] text-[#2b180a]">AI Summary</span>
+                    </div>
+                    <div className="flex gap-1.5 mb-2">
+                      <span className="text-[7px] px-2.5 py-0.5 rounded-full bg-orange text-white">Lay Summary</span>
+                      <span className="text-[7px] px-2.5 py-0.5 rounded-full bg-[#e8d3c0]/50 text-[#94877c]">Original Abstract</span>
+                    </div>
+                    <PlaceholderLines count={4} />
+                    <div className="flex items-center gap-1 mt-2">
+                      <Copy size={7} className="text-[#94877c]" />
+                      <span className="text-[7px] text-[#94877c]">Copy Summary</span>
+                    </div>
+                  </div>
+
+                  {/* ── Key Breakpoints & Methods ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3">
+                    <span className="font-body font-semibold text-[9px] text-[#2b180a]">Key Breakpoints &amp; Methods</span>
+                    <div className="mt-2 space-y-2">
+                      {["Research Question", "Data & Sample", "Method Highlights", "Key Results", "Implications"].map((label, i) => (
+                        <div key={i} className="flex gap-2">
+                          <span className="flex-shrink-0 w-3.5 h-3.5 rounded-full bg-orange text-white text-[6px] font-bold flex items-center justify-center mt-0.5">
                             {i + 1}
                           </span>
-                          <div>
-                            <span className="text-xs font-medium text-[#2b180a]">{item.label}: </span>
-                            <span className="text-xs text-[#94877c]">{item.text}</span>
+                          <div className="flex-1">
+                            <span className="text-[7px] font-medium text-orange">{label}</span>
+                            <PlaceholderLines count={1} className="mt-1" />
                           </div>
-                        </li>
+                        </div>
                       ))}
-                    </ol>
+                    </div>
                   </div>
 
-                  {/* Ask AI button */}
-                  <div className="flex justify-center pt-2">
-                    <span className="flex items-center gap-2 bg-[#f97316] text-white px-5 py-2.5 rounded-pill shadow-md text-sm font-medium">
-                      <Sparkles size={14} />
-                      Ask AI about this paper
-                    </span>
+                  {/* ── Figure Digest ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3">
+                    <span className="font-body font-semibold text-[9px] text-[#2b180a]">Figure Digest</span>
+                    <div className="mt-2 grid grid-cols-2 gap-2">
+                      <div className="bg-[#e8d3c0]/40 rounded-md h-12 flex items-center justify-center">
+                        <span className="text-[7px] text-[#94877c]">Figure 1</span>
+                      </div>
+                      <div className="space-y-1.5 flex flex-col justify-center">
+                        <PlaceholderLine width="90%" />
+                        <PlaceholderLine width="70%" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Related & Extended ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3">
+                    <span className="font-body font-semibold text-[9px] text-[#2b180a]">Related &amp; Extended</span>
+                    <div className="mt-2 flex gap-2">
+                      {[1, 2, 3].map((n) => (
+                        <div key={n} className="flex-1 rounded-md overflow-hidden border border-[#e8d3c0]/30">
+                          <div className="bg-[#e8d3c0]/30 h-8 relative">
+                            <span className="absolute top-1 left-1 text-[5px] px-1 py-0.5 rounded bg-[#06b6d4] text-white">Related</span>
+                          </div>
+                          <div className="p-1.5">
+                            <PlaceholderLine width="85%" />
+                            <div className="mt-1">
+                              <PlaceholderLine width="55%" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ── Quick Citation ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3">
+                    <span className="font-body font-semibold text-[9px] text-[#2b180a]">Quick Citation</span>
+                    <div className="flex gap-1.5 mt-2">
+                      {["Copy BibTeX", "Copy APA", "Export to Zotero"].map((label) => (
+                        <span key={label} className="flex items-center gap-1 text-[6px] px-2 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                          <Copy size={6} /> {label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ── Relevance Feedback ── */}
+                  <div className="bg-[#faf6f2] rounded-[10px] p-3 text-center">
+                    <span className="font-body font-semibold text-[8px] text-[#2b180a]">Is this paper relevant to you?</span>
+                    <p className="text-[6px] text-[#94877c] mt-0.5">Giving feedback helps us give you better recommendations.</p>
+                    <div className="flex justify-center gap-2 mt-2">
+                      <span className="flex items-center gap-1 text-[7px] px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <ThumbsUp size={7} /> Yes
+                      </span>
+                      <span className="flex items-center gap-1 text-[7px] px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                        <ThumbsDown size={7} /> No
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Bottom fade gradient ── */}
+                <div className="absolute bottom-10 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+
+                {/* ── Sticky AI Chatbox ── */}
+                <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#e8d3c0]/30 px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={12} className="text-orange flex-shrink-0" />
+                    <div className="flex-1 bg-[#faf6f2] rounded-full px-3 py-1.5 flex items-center">
+                      <span className="text-[8px] text-[#94877c]">Ask AI about this paper...</span>
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
+                      <Send size={10} className="text-white" />
+                    </div>
                   </div>
                 </div>
               </div>
