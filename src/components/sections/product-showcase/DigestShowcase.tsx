@@ -90,34 +90,30 @@ export function DigestShowcase() {
                       <PlaceholderLine width="12%" />
                     </div>
                     {/* Published in Journal · Year · Citations + View Full Paper */}
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs text-[#94877c]">Published in</span>
-                        <span className="text-xs text-orange font-medium">Journal Name</span>
-                        <span className="text-xs text-[#94877c]">2024 &middot; 487 citations</span>
-                      </div>
-                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                    <div className="mt-3 flex items-center justify-between flex-nowrap whitespace-nowrap">
+                      <span className="text-xs text-[#94877c]">Published in <span className="text-orange font-medium">Journal Name</span> 2024 &middot; 487 citations</span>
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c] flex-shrink-0">
                         <ExternalLink size={12} /> View Full Paper
                       </span>
                     </div>
                     {/* Author pills */}
-                    <div className="flex gap-2 mt-3">
+                    <div className="flex gap-2 mt-3 flex-nowrap">
                       {[0, 1, 2].map((i) => (
-                        <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">Author Name</span>
+                        <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c] whitespace-nowrap">Author Name</span>
                       ))}
                     </div>
                     {/* Action bar */}
-                    <div className="flex items-center gap-2.5 mt-4">
-                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-orange text-white">
+                    <div className="flex items-center gap-2.5 mt-4 flex-nowrap">
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-orange text-white whitespace-nowrap">
                         <Heart size={12} /> Like
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-orange text-white">
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-orange text-white whitespace-nowrap">
                         <Bookmark size={12} /> Save
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c] whitespace-nowrap">
                         <Clock size={12} /> Read Later
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c]">
+                      <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#e8d3c0] text-[#94877c] whitespace-nowrap">
                         <Share2 size={12} /> Share
                       </span>
                     </div>
