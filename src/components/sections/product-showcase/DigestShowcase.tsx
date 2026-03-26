@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, Send, Code, FileText } from "lucide-react";
+import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, Send, Code, FileText, Plus, ArrowUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EASE_CARD } from "@/components/motion/variants";
 import { BrowserMockup } from "@/components/sections/BrowserMockup";
@@ -189,7 +189,7 @@ export function DigestShowcase() {
                   </div>
 
                   {/* ── Related & Extended ── */}
-                  <div className="bg-[#faf6f2] rounded-2xl p-5">
+                  <div className="p-5">
                     <span className="font-body font-semibold text-base text-[#2b180a]">Related &amp; Extended</span>
                     <div className="mt-3 flex gap-3">
                       {[1, 2, 3].map((n) => (
@@ -224,14 +224,14 @@ export function DigestShowcase() {
 
               </div>
               {/* ── AI Chatbox (pinned below scrollable area) ── */}
-              <div className="bg-white border-t border-[#e8d3c0]/30 px-4 py-2.5">
-                <div className="flex items-center gap-2.5">
-                  <Sparkles size={16} className="text-orange flex-shrink-0" />
-                  <div className="flex-1 bg-[#faf6f2] rounded-full px-4 py-2 flex items-center">
-                    <span className="text-xs text-[#94877c]">Ask AI about this paper...</span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
-                    <Send size={14} className="text-white" />
+              <div className="bg-page-warm border-t border-[#e8d3c0]/30 px-4 py-3">
+                <div className="bg-white rounded-2xl border border-[#e8d3c0]/30 px-4 pt-3 pb-2.5">
+                  <span className="text-xs text-[#94877c]">Type your answer...</span>
+                  <div className="flex items-center justify-between mt-3">
+                    <Plus size={14} className="text-[#94877c]" />
+                    <div className="w-7 h-7 rounded-full bg-[#e8d3c0]/50 flex items-center justify-center">
+                      <ArrowUp size={13} className="text-[#94877c]" />
+                    </div>
                   </div>
                 </div>
               </div>
