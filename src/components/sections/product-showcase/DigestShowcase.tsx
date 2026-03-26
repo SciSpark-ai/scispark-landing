@@ -226,7 +226,7 @@ export function DigestShowcase() {
               {/* ── AI Chatbox (pinned below scrollable area) ── */}
               <div className="bg-page-warm border-t border-[#e8d3c0]/30 px-4 py-3">
                 <div className="bg-white rounded-2xl border border-[#e8d3c0]/30 px-4 pt-3 pb-2.5">
-                  <span className="text-xs text-[#94877c]">Type your answer...</span>
+                  <span className="text-xs text-[#94877c]">Ask question about this paper</span>
                   <div className="flex items-center justify-between mt-3">
                     <Plus size={14} className="text-[#94877c]" />
                     <div className="w-7 h-7 rounded-full bg-[#e8d3c0]/50 flex items-center justify-center">
