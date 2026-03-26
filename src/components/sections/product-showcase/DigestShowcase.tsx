@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, ThumbsUp, ThumbsDown, Send } from "lucide-react";
+import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, ThumbsUp, ThumbsDown, Send, Code, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EASE_CARD } from "@/components/motion/variants";
 import { BrowserMockup } from "@/components/sections/BrowserMockup";
@@ -166,6 +166,15 @@ export function DigestShowcase() {
                           </div>
                         </div>
                       ))}
+                    </div>
+                    {/* Code & Data buttons */}
+                    <div className="flex gap-2 mt-4">
+                      <span className="flex items-center gap-1.5 text-xs px-4 py-2 rounded-full border border-[#e8d3c0] text-[#2b180a] whitespace-nowrap">
+                        <Code size={12} /> Code
+                      </span>
+                      <span className="flex items-center gap-1.5 text-xs px-4 py-2 rounded-full border border-[#e8d3c0] text-[#2b180a] whitespace-nowrap">
+                        <FileText size={12} /> Data
+                      </span>
                     </div>
                   </div>
 
