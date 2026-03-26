@@ -1,0 +1,642 @@
+<h2>SciSpark App — Layout Overview</h2>
+<p class="subtitle">5 views mapped to the sidebar navigation. Click to select the one you'd like to see mocked up first.</p>
+
+<style>
+  .app-shell {
+    display: flex;
+    border: 1px solid #e8d3c0;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 520px;
+    margin-bottom: 32px;
+    font-family: system-ui, sans-serif;
+    background: #fefaf5;
+  }
+  .app-sidebar {
+    width: 200px;
+    background: #f6f0e9;
+    border-right: 1px solid #e8d3c0;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .app-sidebar .logo {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: #2b180a;
+    padding: 0 8px 16px;
+    letter-spacing: -0.03em;
+  }
+  .app-sidebar .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #94877c;
+    cursor: default;
+  }
+  .app-sidebar .nav-item.active {
+    background: #efe7dd;
+    color: #2b180a;
+    font-weight: 500;
+  }
+  .app-sidebar .nav-icon {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .app-sidebar .divider {
+    border-top: 1px solid #e8d3c0;
+    margin: 12px 8px;
+  }
+  .app-sidebar .recent-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94877c;
+    padding: 0 10px 6px;
+  }
+  .app-sidebar .recent-item {
+    font-size: 12px;
+    color: #94877c;
+    padding: 4px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .app-main-inner {
+    flex: 1;
+    padding: 24px;
+    overflow: hidden;
+  }
+  .view-label {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: #f97316;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+  }
+  .app-sources {
+    width: 260px;
+    background: #faf6f2;
+    border-left: 1px solid #e8d3c0;
+    padding: 16px;
+    flex-shrink: 0;
+  }
+  .app-sources .src-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2b180a;
+    margin-bottom: 12px;
+  }
+  .src-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #e8d3c0;
+  }
+  .src-item .src-domain {
+    font-size: 10px;
+    color: #94877c;
+  }
+  .src-item .src-name {
+    font-size: 12px;
+    color: #2b180a;
+    line-height: 1.3;
+  }
+
+  /* Feed mockup */
+  .feed-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .feed-card {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .feed-card-header {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+  }
+  .feed-card-body {
+    padding: 10px;
+  }
+  .feed-card-body h4 {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2b180a;
+    line-height: 1.3;
+    margin: 0 0 4px;
+  }
+  .feed-card-body p {
+    font-size: 10px;
+    color: #94877c;
+    line-height: 1.4;
+    margin: 0;
+  }
+  .feed-card-footer {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .feed-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .feed-star {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #dab697;
+  }
+  .feed-star.empty {
+    background: #e8d3c0;
+  }
+
+  /* Search mockup */
+  .search-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+  }
+  .search-logo {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    color: #2b180a;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+  .search-box {
+    width: 80%;
+    max-width: 480px;
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #94877c;
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  .search-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .search-chip {
+    background: #efe7dd;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: #2b180a;
+  }
+
+  /* Chat mockup */
+  .chat-question {
+    background: #f6f0e9;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #2b180a;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .chat-answer {
+    font-size: 12px;
+    color: #2b180a;
+    line-height: 1.7;
+  }
+  .chat-answer h3 {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 12px 0 6px;
+    color: #2b180a;
+  }
+  .chat-citation {
+    display: inline-block;
+    background: #efe7dd;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    color: #94877c;
+    margin: 0 2px;
+    vertical-align: middle;
+  }
+  .chat-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid #e8d3c0;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #94877c;
+  }
+  .sources-btn {
+    background: #f97316;
+    color: white;
+    border-radius: 50px;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .chat-followups {
+    margin-top: 12px;
+  }
+  .chat-followup {
+    padding: 8px 12px;
+    border: 1px solid #e8d3c0;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #94877c;
+    margin-bottom: 6px;
+  }
+  .chat-input-bar {
+    border-top: 1px solid #e8d3c0;
+    padding: 12px 24px;
+    font-size: 12px;
+    color: #94877c;
+  }
+
+  /* Onboarding mockup */
+  .onboard-chat {
+    max-width: 420px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+  .onboard-msg {
+    margin-bottom: 12px;
+  }
+  .onboard-ai {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 12px 12px 12px 2px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #2b180a;
+    line-height: 1.5;
+    max-width: 320px;
+  }
+  .onboard-user {
+    background: #f97316;
+    color: white;
+    border-radius: 12px 12px 2px 12px;
+    padding: 8px 14px;
+    font-size: 12px;
+    max-width: 200px;
+    margin-left: auto;
+  }
+  .onboard-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .onboard-opt {
+    background: #faf6f2;
+    border: 1px solid #e8d3c0;
+    border-radius: 50px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: #2b180a;
+  }
+
+  /* Library mockup */
+  .lib-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .lib-tab {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 11px;
+    color: #94877c;
+    background: #efe7dd;
+  }
+  .lib-tab.active {
+    background: #f97316;
+    color: white;
+  }
+  .lib-list-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8d3c0;
+  }
+  .lib-color-bar {
+    width: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .lib-item-body h4 {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2b180a;
+    margin: 0 0 3px;
+  }
+  .lib-item-body p {
+    font-size: 10px;
+    color: #94877c;
+    margin: 0;
+  }
+</style>
+
+<!-- VIEW 1: Home / Discover Feed -->
+<div class="section">
+  <h3>1. Home — Evidence Feed</h3>
+  <p class="subtitle">Default landing after onboarding. Perplexity Discover grid with SciSpark paper cards.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item active"><span class="nav-icon">🏠</span> Home</div>
+      <div class="nav-item"><span class="nav-icon">💬</span> New Chat</div>
+      <div class="nav-item"><span class="nav-icon">📚</span> Library</div>
+      <div class="nav-item"><span class="nav-icon">🕐</span> History</div>
+      <div class="nav-item"><span class="nav-icon">👤</span> Profile</div>
+      <div class="divider"></div>
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart...</div>
+      <div class="recent-item">CAR-T therapy durability...</div>
+      <div class="recent-item">TMS protocol comparison...</div>
+    </div>
+    <div class="app-main">
+      <span class="view-label">Home</span>
+      <div class="app-main-inner">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:Georgia,serif;font-size:18px;color:#2b180a;">Discover</div>
+          <div style="display:flex;gap:8px;">
+            <span style="font-size:12px;color:#f97316;border-bottom:2px solid #f97316;padding-bottom:2px;">For You</span>
+            <span style="font-size:12px;color:#94877c;">Trending</span>
+            <span style="font-size:12px;color:#94877c;">Specialties</span>
+          </div>
+        </div>
+        <div class="feed-grid">
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#6b7280;">Psychiatry</div>
+            <div class="feed-card-body">
+              <h4>Stanford's 5-Day Brain Stimulation Protocol Achieves 90% Remission</h4>
+              <p>A revolutionary 5-day protocol using fMRI-guided TMS achieved 90.5% remission...</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="feed-stars"><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div></div>
+              <span style="font-size:10px;color:#94877c;">♡ ☆ ⏰</span>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#ea580c;">Cardiology</div>
+            <div class="feed-card-body">
+              <h4>GLP-1 Receptor Agonists Reduce Major Adverse Cardiac Events by 14%</h4>
+              <p>Large-scale trial demonstrates semaglutide significantly reduces MACE...</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="feed-stars"><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div></div>
+              <span style="font-size:10px;color:#94877c;">♡ ☆ ⏰</span>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#d97706;">Oncology</div>
+            <div class="feed-card-body">
+              <h4>CAR-T Shows Durable Remission in Relapsed Lymphoma</h4>
+              <p>5-year follow-up confirms sustained complete response in 40% of patients...</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="feed-stars"><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star empty"></div></div>
+              <span style="font-size:10px;color:#94877c;">♡ ☆ ⏰</span>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#f59e0b;">Pediatrics</div>
+            <div class="feed-card-body">
+              <h4>Early Peanut Introduction Reduces Allergy Risk by 77%</h4>
+              <p>LEAP follow-up study confirms lasting protection from peanut allergy...</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="feed-stars"><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div><div class="feed-star"></div></div>
+              <span style="font-size:10px;color:#94877c;">♡ ☆ ⏰</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 2: New Chat / Search Landing -->
+<div class="section">
+  <h3>2. New Chat — Search Landing</h3>
+  <p class="subtitle">Perplexity-style centered search with suggestion chips. Transitions to chat thread on submit.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
+      <div class="nav-item active"><span class="nav-icon">💬</span> New Chat</div>
+      <div class="nav-item"><span class="nav-icon">📚</span> Library</div>
+      <div class="nav-item"><span class="nav-icon">🕐</span> History</div>
+      <div class="nav-item"><span class="nav-icon">👤</span> Profile</div>
+      <div class="divider"></div>
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart...</div>
+      <div class="recent-item">CAR-T therapy durability...</div>
+      <div class="recent-item">TMS protocol comparison...</div>
+    </div>
+    <div class="app-main">
+      <span class="view-label">New Chat</span>
+      <div class="app-main-inner">
+        <div class="search-center">
+          <div class="search-logo">SciSpark</div>
+          <div class="search-box">Ask about clinical evidence, treatments, guidelines...</div>
+          <div class="search-chips">
+            <div class="search-chip">🔬 Compare treatments</div>
+            <div class="search-chip">📋 Summarize RCT</div>
+            <div class="search-chip">📖 Find guidelines</div>
+            <div class="search-chip">⚖️ Risk vs benefit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 3: Chat Thread with Sources Panel -->
+<div class="section">
+  <h3>3. Chat Thread — Answer + Sources Panel</h3>
+  <p class="subtitle">After submitting a question. Click "sources" to toggle right panel. Follow-ups at bottom.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
+      <div class="nav-item active"><span class="nav-icon">💬</span> New Chat</div>
+      <div class="nav-item"><span class="nav-icon">📚</span> Library</div>
+      <div class="nav-item"><span class="nav-icon">🕐</span> History</div>
+      <div class="nav-item"><span class="nav-icon">👤</span> Profile</div>
+      <div class="divider"></div>
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item" style="color:#2b180a;font-weight:500;">Latest research in health...</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart...</div>
+      <div class="recent-item">CAR-T therapy durability...</div>
+    </div>
+    <div class="app-main" style="flex:1;">
+      <span class="view-label">Chat + Sources</span>
+      <div class="app-main-inner" style="overflow-y:auto;">
+        <div class="chat-question">What are the latest research trends in health and wellness in 2025?</div>
+        <div class="chat-answer">
+          <h3>Personalized medicine and genomics</h3>
+          <p>In 2025, health research is centering on tech-enabled personalization, metabolic and brain health, and prevention at both individual and population levels. <span class="chat-citation">pmc.ncbi.nlm.nih +1</span></p>
+
+          <h3>Tech-enabled self-tracking</h3>
+          <p>Researchers emphasize consumer wearables, at-home sensors, and apps that monitor key health metrics and manage chronic disease outside clinics. <span class="chat-citation">pmc.ncbi.nlm.nih +2</span></p>
+        </div>
+        <div class="chat-action-bar">
+          <span>📎</span> <span>📋</span> <span>↗</span>
+          <span class="sources-btn">📄 12 sources</span>
+          <span style="margin-left:auto;">👍 👎</span>
+        </div>
+        <div class="chat-followups">
+          <div class="chat-followup">↗ Monitor weekly for new wellness research papers...</div>
+          <div class="chat-followup">↗ Compare personalized medicine approaches across specialties...</div>
+        </div>
+      </div>
+      <div class="chat-input-bar">Ask a follow-up...</div>
+    </div>
+    <div class="app-sources">
+      <div class="src-title">12 sources</div>
+      <div class="src-item"><div class="src-domain">pmc.ncbi.nlm.nih</div><div class="src-name">A Decade of Progress: A Bibliometric Analysis of Green Safety and Health...</div></div>
+      <div class="src-item"><div class="src-domain">linkinghub.elsevier</div><div class="src-name">Global age-sex-specific mortality and life expectancy estimates...</div></div>
+      <div class="src-item"><div class="src-domain">academic.oup</div><div class="src-name">P1259 A 15-year analysis of Inflammatory Bowel Disease in Africa...</div></div>
+      <div class="src-item"><div class="src-domain">ieeexplore.ieee</div><div class="src-name">Automated Approaches For Detecting And Classifying Colon Cancer...</div></div>
+      <div class="src-item"><div class="src-domain">link.springer</div><div class="src-name">Catalytic materials applied for dye removal in advanced oxidation...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 4: Library -->
+<div class="section">
+  <h3>4. Library — Saved Papers</h3>
+  <p class="subtitle">Tabs for Saved / Liked / Read Later. List view with specialty color bars.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
+      <div class="nav-item"><span class="nav-icon">💬</span> New Chat</div>
+      <div class="nav-item active"><span class="nav-icon">📚</span> Library</div>
+      <div class="nav-item"><span class="nav-icon">🕐</span> History</div>
+      <div class="nav-item"><span class="nav-icon">👤</span> Profile</div>
+      <div class="divider"></div>
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart...</div>
+      <div class="recent-item">CAR-T therapy durability...</div>
+    </div>
+    <div class="app-main">
+      <span class="view-label">Library</span>
+      <div class="app-main-inner">
+        <div style="font-family:Georgia,serif;font-size:18px;color:#2b180a;margin-bottom:16px;">Library</div>
+        <div class="lib-tabs">
+          <div class="lib-tab active">Saved</div>
+          <div class="lib-tab">Liked</div>
+          <div class="lib-tab">Read Later</div>
+        </div>
+        <div class="lib-list-item">
+          <div class="lib-color-bar" style="background:#6b7280;"></div>
+          <div class="lib-item-body">
+            <h4>Stanford's 5-Day Brain Stimulation Protocol Achieves 90% Remission</h4>
+            <p>Am J Psychiatry · 2020 · Psychiatry · ★★★★★</p>
+          </div>
+        </div>
+        <div class="lib-list-item">
+          <div class="lib-color-bar" style="background:#ea580c;"></div>
+          <div class="lib-item-body">
+            <h4>GLP-1 Receptor Agonists Reduce Major Adverse Cardiac Events by 14%</h4>
+            <p>NEJM · 2025 · Cardiology · ★★★★★</p>
+          </div>
+        </div>
+        <div class="lib-list-item">
+          <div class="lib-color-bar" style="background:#d97706;"></div>
+          <div class="lib-item-body">
+            <h4>CAR-T Therapy Shows Durable Remission in Relapsed Lymphoma</h4>
+            <p>Lancet Oncol · 2025 · Oncology · ★★★★☆</p>
+          </div>
+        </div>
+        <div class="lib-list-item">
+          <div class="lib-color-bar" style="background:#f59e0b;"></div>
+          <div class="lib-item-body">
+            <h4>Early Peanut Introduction Reduces Allergy Risk by 77%</h4>
+            <p>NEJM · 2024 · Pediatrics · ★★★★★</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 5: Onboarding -->
+<div class="section">
+  <h3>5. Onboarding — Conversational</h3>
+  <p class="subtitle">AI agent asks questions one at a time. User picks from chips or types custom answer.</p>
+  <div class="app-shell" style="height:480px;">
+    <div class="app-main" style="flex:1;background:#fefaf5;">
+      <span class="view-label">Onboarding</span>
+      <div class="app-main-inner">
+        <div class="onboard-chat">
+          <div class="onboard-msg">
+            <div class="onboard-ai">
+              👋 Welcome to SciSpark! I'm your clinical evidence assistant. Let me personalize your experience. <br><br>What's your primary <strong>clinical specialty</strong>?
+            </div>
+            <div class="onboard-options">
+              <div class="onboard-opt">Cardiology</div>
+              <div class="onboard-opt">Oncology</div>
+              <div class="onboard-opt">Psychiatry</div>
+              <div class="onboard-opt">Neurology</div>
+              <div class="onboard-opt">Pediatrics</div>
+              <div class="onboard-opt">Other...</div>
+            </div>
+          </div>
+          <div class="onboard-msg">
+            <div class="onboard-user">Cardiology</div>
+          </div>
+          <div class="onboard-msg">
+            <div class="onboard-ai">
+              Great! And what's your <strong>role</strong>?
+            </div>
+            <div class="onboard-options">
+              <div class="onboard-opt">Physician</div>
+              <div class="onboard-opt">Researcher</div>
+              <div class="onboard-opt">Resident</div>
+              <div class="onboard-opt">NP / PA</div>
+              <div class="onboard-opt">Other...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

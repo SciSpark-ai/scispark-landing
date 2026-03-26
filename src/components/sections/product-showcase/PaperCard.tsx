@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Star, Heart, Bookmark, Clock, MoreHorizontal } from "lucide-react";
+import { GrainOverlay } from "@/components/GrainOverlay";
 import type { PaperCardData } from "./paper-data";
 
 interface PaperCardProps {
@@ -33,8 +34,7 @@ export function PaperCard({ paper, onCardClick, showTooltip = true }: PaperCardP
         className="h-12 relative flex items-center px-4"
         style={{ backgroundColor: paper.specialtyColor }}
       >
-        {/* Grain texture overlay */}
-        <div className="absolute inset-0 bg-black/10" />
+        <GrainOverlay intensity="heavy" />
         <span className="relative text-white/90 text-xs font-medium uppercase tracking-wider">
           {paper.specialty}
         </span>

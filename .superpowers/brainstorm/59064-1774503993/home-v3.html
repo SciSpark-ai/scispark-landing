@@ -1,0 +1,449 @@
+<h2>SciSpark App — Home Page (Updated)</h2>
+<p class="subtitle">Personalized greeting, paper feed grid, right sidebar with clinical stats widgets.</p>
+
+<style>
+  .app-shell {
+    display: flex;
+    border: 1px solid #e8d3c0;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 620px;
+    margin-bottom: 32px;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fefaf5;
+    box-shadow: 0 4px 24px rgba(43,24,10,0.06);
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 210px;
+    background: #f6f0e9;
+    border-right: 1px solid #e8d3c0;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .sidebar .logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    color: #2b180a;
+    padding: 0 10px 20px;
+    letter-spacing: -0.04em;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #94877c;
+  }
+  .nav-item.active {
+    background: #efe7dd;
+    color: #2b180a;
+    font-weight: 500;
+  }
+  .nav-item svg { width: 18px; height: 18px; stroke-width: 1.8; flex-shrink: 0; }
+  .sidebar-hr { border: none; border-top: 1px solid #e8d3c0; margin: 14px 10px; }
+  .rc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #94877c; padding: 0 12px 8px; font-weight: 500; }
+  .rc-item { font-size: 12px; color: #94877c; padding: 5px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 6px; line-height: 1.4; }
+
+  /* ===== CENTER ===== */
+  .center { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .center-inner { flex: 1; padding: 28px; overflow-y: auto; }
+
+  /* Greeting */
+  .greeting { margin-bottom: 6px; }
+  .greeting h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #2b180a;
+    letter-spacing: -0.04em;
+    margin: 0;
+  }
+  .greeting h1 span { color: #f97316; }
+  .greeting-sub {
+    font-size: 14px;
+    color: #94877c;
+    margin: 4px 0 0;
+    line-height: 1.5;
+  }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 20px; margin: 20px 0; border-bottom: 1px solid #e8d3c0; padding-bottom: 0; }
+  .tab { font-size: 13px; color: #94877c; padding-bottom: 10px; position: relative; }
+  .tab.active { color: #2b180a; font-weight: 500; }
+  .tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #f97316; border-radius: 2px; }
+
+  /* Feed */
+  .feed { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 6px 20px rgba(43,24,10,0.07); transform: translateY(-2px); }
+  .card-hdr {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.9);
+    position: relative;
+  }
+  .card-body { padding: 12px; }
+  .card-body h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #2b180a;
+    line-height: 1.35;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+  .card-body p {
+    font-size: 11px; color: #94877c; line-height: 1.5; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-meta {
+    font-size: 10px; color: #94877c; margin-top: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .card-meta .sep { color: #e8d3c0; }
+  .card-foot {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f6f0e9;
+  }
+  .stars { display: flex; gap: 2px; }
+  .star { width: 10px; height: 10px; color: #dab697; }
+  .star.empty { color: #e8d3c0; }
+  .acts { display: flex; gap: 8px; color: #94877c; }
+  .acts svg { width: 13px; height: 13px; stroke-width: 1.6; }
+
+  /* ===== RIGHT SIDEBAR ===== */
+  .right {
+    width: 260px;
+    background: #faf6f2;
+    border-left: 1px solid #e8d3c0;
+    padding: 24px 18px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  .widget { margin-bottom: 24px; }
+  .widget:last-child { margin-bottom: 0; }
+  .widget-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #2b180a;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .stat-icon svg { width: 16px; height: 16px; stroke-width: 1.8; }
+  .stat-text { flex: 1; }
+  .stat-num {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2b180a;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .stat-label { font-size: 11px; color: #94877c; margin-top: 2px; }
+
+  .trend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8d3c0;
+  }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-rank {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #efe7dd;
+    font-size: 10px;
+    font-weight: 600;
+    color: #2b180a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .trend-rank.hot { background: #f97316; color: white; }
+  .trend-text { font-size: 12px; color: #2b180a; line-height: 1.3; }
+  .trend-count { font-size: 10px; color: #94877c; margin-left: auto; white-space: nowrap; }
+
+  .streak-box {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .streak-num {
+    font-size: 28px;
+    font-weight: 600;
+    color: #f97316;
+    line-height: 1;
+  }
+  .streak-label { font-size: 12px; color: #94877c; margin-top: 4px; }
+  .streak-days {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .streak-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e8d3c0;
+  }
+  .streak-dot.filled { background: #f97316; }
+  .streak-day-labels {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .streak-day-label {
+    width: 8px;
+    text-align: center;
+    font-size: 8px;
+    color: #94877c;
+  }
+</style>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-clock-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+    <symbol id="i-trending" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  </defs>
+</svg>
+
+<div class="app-shell">
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="logo">SciSpark</div>
+    <div class="nav-item active"><svg><use href="#i-home"/></svg> Home</div>
+    <div class="nav-item"><svg><use href="#i-plus"/></svg> New Chat</div>
+    <div class="nav-item"><svg><use href="#i-book"/></svg> Library</div>
+    <div class="nav-item"><svg><use href="#i-clock"/></svg> History</div>
+    <div class="nav-item"><svg><use href="#i-user"/></svg> Profile</div>
+    <hr class="sidebar-hr">
+    <div class="rc-label">Recent Chats</div>
+    <div class="rc-item">GLP-1 vs SGLT2 for heart failure</div>
+    <div class="rc-item">CAR-T therapy durability data</div>
+    <div class="rc-item">TMS protocol comparison</div>
+  </div>
+
+  <!-- Center: Feed -->
+  <div class="center">
+    <div class="center-inner">
+      <!-- Greeting -->
+      <div class="greeting">
+        <h1>Good evening, <span>Tong</span></h1>
+        <p class="greeting-sub">Explore the latest research in Cardiology and your interests.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <span class="tab active">For You</span>
+        <span class="tab">Trending</span>
+        <span class="tab">By Specialty</span>
+      </div>
+
+      <!-- Cards -->
+      <div class="feed">
+        <div class="card">
+          <div class="card-hdr" style="background:#ea580c;">Cardiology</div>
+          <div class="card-body">
+            <h4>GLP-1 Receptor Agonists Reduce Major Adverse Cardiac Events by 14%</h4>
+            <p>Large-scale trial demonstrates semaglutide significantly reduces MACE in patients with established cardiovascular disease.</p>
+            <div class="card-meta">NEJM <span class="sep">&middot;</span> 2025 <span class="sep">&middot;</span> New This Week</div>
+          </div>
+          <div class="card-foot">
+            <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+            <div class="acts"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hdr" style="background:#6b7280;">Psychiatry</div>
+          <div class="card-body">
+            <h4>Stanford's 5-Day Brain Stimulation Protocol Achieves 90% Remission</h4>
+            <p>A revolutionary 5-day protocol using fMRI-guided TMS achieved 90.5% remission in treatment-resistant depression.</p>
+            <div class="card-meta">Am J Psychiatry <span class="sep">&middot;</span> 2020 <span class="sep">&middot;</span> Breakthrough</div>
+          </div>
+          <div class="card-foot">
+            <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+            <div class="acts"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hdr" style="background:#d97706;">Oncology</div>
+          <div class="card-body">
+            <h4>CAR-T Shows Durable Remission in Relapsed Lymphoma</h4>
+            <p>5-year follow-up confirms sustained complete response in 40% of patients with relapsed large B-cell lymphoma.</p>
+            <div class="card-meta">Lancet Oncol <span class="sep">&middot;</span> 2025 <span class="sep">&middot;</span> Clinically Actionable</div>
+          </div>
+          <div class="card-foot">
+            <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star empty"><use href="#i-star-empty"/></svg></div>
+            <div class="acts"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hdr" style="background:#f59e0b;">Pediatrics</div>
+          <div class="card-body">
+            <h4>Early Peanut Introduction Reduces Allergy Risk by 77%</h4>
+            <p>LEAP follow-up study confirms lasting protection from peanut allergy with early introduction in high-risk infants.</p>
+            <div class="card-meta">NEJM <span class="sep">&middot;</span> 2024 <span class="sep">&middot;</span> High Impact</div>
+          </div>
+          <div class="card-foot">
+            <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+            <div class="acts"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar: Widgets -->
+  <div class="right">
+    <!-- Your Week -->
+    <div class="widget">
+      <div class="widget-title">Your Week</div>
+      <div class="stat-row">
+        <div class="stat-icon" style="background:#f97316/10;background:rgba(249,115,22,0.1);">
+          <svg style="color:#f97316;"><use href="#i-file"/></svg>
+        </div>
+        <div class="stat-text">
+          <div class="stat-num">18</div>
+          <div class="stat-label">New in Cardiology</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-icon" style="background:rgba(249,115,22,0.1);">
+          <svg style="color:#f97316;"><use href="#i-trending"/></svg>
+        </div>
+        <div class="stat-text">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Trending in your fields</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-icon" style="background:rgba(249,115,22,0.1);">
+          <svg style="color:#f97316;"><use href="#i-eye"/></svg>
+        </div>
+        <div class="stat-text">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Saved &amp; unread</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trending Topics -->
+    <div class="widget">
+      <div class="widget-title">Trending Topics</div>
+      <div class="trend-item">
+        <div class="trend-rank hot">1</div>
+        <div class="trend-text">GLP-1 agonists</div>
+        <div class="trend-count">142 papers</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-rank hot">2</div>
+        <div class="trend-text">AI diagnostics</div>
+        <div class="trend-count">98 papers</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-rank">3</div>
+        <div class="trend-text">Long COVID</div>
+        <div class="trend-count">87 papers</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-rank">4</div>
+        <div class="trend-text">CAR-T therapy</div>
+        <div class="trend-count">64 papers</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-rank">5</div>
+        <div class="trend-text">Gut microbiome</div>
+        <div class="trend-count">53 papers</div>
+      </div>
+    </div>
+
+    <!-- Reading Streak -->
+    <div class="widget">
+      <div class="widget-title">Reading Streak</div>
+      <div class="streak-box">
+        <div class="streak-num">3</div>
+        <div class="streak-label">day streak</div>
+        <div class="streak-days">
+          <div class="streak-dot filled"></div>
+          <div class="streak-dot filled"></div>
+          <div class="streak-dot filled"></div>
+          <div class="streak-dot"></div>
+          <div class="streak-dot"></div>
+          <div class="streak-dot"></div>
+          <div class="streak-dot"></div>
+        </div>
+        <div class="streak-day-labels">
+          <div class="streak-day-label">M</div>
+          <div class="streak-day-label">T</div>
+          <div class="streak-day-label">W</div>
+          <div class="streak-day-label">T</div>
+          <div class="streak-day-label">F</div>
+          <div class="streak-day-label">S</div>
+          <div class="streak-day-label">S</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

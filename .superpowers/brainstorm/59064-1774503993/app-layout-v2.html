@@ -1,0 +1,886 @@
+<h2>SciSpark App — Layout Overview</h2>
+<p class="subtitle">5 views mapped to the sidebar navigation. All using SciSpark warm visual standard.</p>
+
+<style>
+  /* ===== RESET & BASE ===== */
+  .app-shell {
+    display: flex;
+    border: 1px solid #e8d3c0;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 540px;
+    margin-bottom: 32px;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fefaf5;
+    box-shadow: 0 4px 24px rgba(43,24,10,0.06);
+  }
+
+  /* ===== SIDEBAR ===== */
+  .app-sidebar {
+    width: 210px;
+    background: #f6f0e9;
+    border-right: 1px solid #e8d3c0;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .app-sidebar .logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    color: #2b180a;
+    padding: 0 10px 20px;
+    letter-spacing: -0.04em;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #94877c;
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .nav-item.active {
+    background: #efe7dd;
+    color: #2b180a;
+    font-weight: 500;
+  }
+  .nav-item svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+  }
+  .sidebar-divider {
+    border: none;
+    border-top: 1px solid #e8d3c0;
+    margin: 14px 10px;
+  }
+  .recent-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94877c;
+    padding: 0 12px 8px;
+    font-weight: 500;
+  }
+  .recent-item {
+    font-size: 12px;
+    color: #94877c;
+    padding: 5px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 6px;
+    line-height: 1.4;
+  }
+  .recent-item.current {
+    color: #2b180a;
+    font-weight: 500;
+    background: #efe7dd;
+  }
+
+  /* ===== MAIN AREA ===== */
+  .app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+  }
+  .app-main-inner {
+    flex: 1;
+    padding: 28px;
+    overflow: hidden;
+  }
+  .view-badge {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: #f97316;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 50px;
+    letter-spacing: 0.02em;
+  }
+  .page-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    color: #2b180a;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+
+  /* ===== SOURCES PANEL ===== */
+  .app-sources {
+    width: 260px;
+    background: #faf6f2;
+    border-left: 1px solid #e8d3c0;
+    padding: 20px 16px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  .src-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2b180a;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .src-close {
+    width: 20px;
+    height: 20px;
+    color: #94877c;
+  }
+  .src-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e8d3c0;
+  }
+  .src-item:last-child { border-bottom: none; }
+  .src-domain {
+    font-size: 10px;
+    color: #94877c;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 3px;
+  }
+  .src-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #dab697;
+    flex-shrink: 0;
+  }
+  .src-name {
+    font-size: 12px;
+    color: #2b180a;
+    line-height: 1.4;
+  }
+
+  /* ===== FEED GRID ===== */
+  .feed-tabs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .feed-tab {
+    font-size: 13px;
+    color: #94877c;
+    padding-bottom: 4px;
+    cursor: default;
+  }
+  .feed-tab.active {
+    color: #f97316;
+    border-bottom: 2px solid #f97316;
+    font-weight: 500;
+  }
+  .feed-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .feed-card {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .feed-card:hover {
+    box-shadow: 0 6px 20px rgba(43,24,10,0.07);
+    transform: translateY(-2px);
+  }
+  .feed-card-header {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.9);
+  }
+  .feed-card-body {
+    padding: 12px;
+  }
+  .feed-card-body h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #2b180a;
+    line-height: 1.35;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+  }
+  .feed-card-body p {
+    font-size: 11px;
+    color: #94877c;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .feed-card-footer {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f6f0e9;
+  }
+  .stars {
+    display: flex;
+    gap: 2px;
+  }
+  .star {
+    width: 10px;
+    height: 10px;
+    color: #dab697;
+  }
+  .star.empty { color: #e8d3c0; }
+  .action-icons {
+    display: flex;
+    gap: 8px;
+    color: #94877c;
+  }
+  .action-icons svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.6;
+  }
+
+  /* ===== SEARCH CENTER ===== */
+  .search-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+  }
+  .search-logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 40px;
+    color: #2b180a;
+    letter-spacing: -0.05em;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .search-box {
+    width: 85%;
+    max-width: 500px;
+    background: white;
+    border: 1.5px solid #e8d3c0;
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #94877c;
+    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .search-box svg {
+    width: 18px;
+    height: 18px;
+    color: #94877c;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+  }
+  .search-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .chip {
+    background: #efe7dd;
+    border: 1px solid #e8d3c0;
+    border-radius: 50px;
+    padding: 7px 16px;
+    font-size: 12px;
+    color: #2b180a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .chip:hover { background: #e8d3c0; }
+  .chip svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.8;
+    color: #f97316;
+  }
+
+  /* ===== CHAT ===== */
+  .chat-question {
+    background: #f6f0e9;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #2b180a;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .chat-answer {
+    font-size: 13px;
+    color: #2b180a;
+    line-height: 1.75;
+  }
+  .chat-answer h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin: 16px 0 6px;
+    color: #2b180a;
+    letter-spacing: -0.02em;
+  }
+  .chat-answer h3:first-child { margin-top: 0; }
+  .cite {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #efe7dd;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 10px;
+    color: #94877c;
+    margin: 0 2px;
+    vertical-align: middle;
+    font-weight: 500;
+  }
+  .action-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-top: 1px solid #e8d3c0;
+    margin-top: 16px;
+    color: #94877c;
+  }
+  .action-bar svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.6;
+    cursor: default;
+  }
+  .sources-btn {
+    background: #f97316;
+    color: white;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .sources-btn svg {
+    width: 13px;
+    height: 13px;
+    color: white;
+  }
+  .thumbs {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    color: #94877c;
+  }
+  .thumbs svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.6;
+  }
+  .followups {
+    margin-top: 14px;
+  }
+  .followup {
+    padding: 10px 14px;
+    border: 1px solid #e8d3c0;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #94877c;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .followup:hover { background: #faf6f2; }
+  .followup svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.8;
+    color: #f97316;
+    flex-shrink: 0;
+  }
+  .chat-input {
+    border-top: 1px solid #e8d3c0;
+    padding: 14px 28px;
+    font-size: 13px;
+    color: #94877c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chat-input svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.8;
+  }
+
+  /* ===== LIBRARY ===== */
+  .lib-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .lib-tab {
+    padding: 7px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    color: #94877c;
+    background: #efe7dd;
+    border: 1px solid transparent;
+    cursor: default;
+    font-weight: 500;
+  }
+  .lib-tab.active {
+    background: #f97316;
+    color: white;
+  }
+  .lib-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e8d3c0;
+    align-items: flex-start;
+  }
+  .lib-item:last-child { border-bottom: none; }
+  .lib-bar {
+    width: 4px;
+    height: 40px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .lib-body h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #2b180a;
+    margin: 0 0 4px;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+  .lib-body p {
+    font-size: 11px;
+    color: #94877c;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lib-meta-sep { color: #e8d3c0; }
+
+  /* ===== ONBOARDING ===== */
+  .onboard-wrapper {
+    max-width: 460px;
+    margin: 0 auto;
+    padding-top: 32px;
+  }
+  .onboard-logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 24px;
+    color: #2b180a;
+    letter-spacing: -0.04em;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .msg { margin-bottom: 16px; }
+  .msg-ai {
+    background: white;
+    border: 1px solid #e8d3c0;
+    border-radius: 16px 16px 16px 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #2b180a;
+    line-height: 1.6;
+    max-width: 360px;
+  }
+  .msg-user {
+    background: #f97316;
+    color: white;
+    border-radius: 16px 16px 4px 16px;
+    padding: 10px 18px;
+    font-size: 13px;
+    max-width: 200px;
+    margin-left: auto;
+    font-weight: 500;
+  }
+  .msg-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .msg-opt {
+    background: #faf6f2;
+    border: 1px solid #e8d3c0;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #2b180a;
+    cursor: default;
+    transition: all 0.15s;
+  }
+  .msg-opt:hover {
+    background: #efe7dd;
+    border-color: #dab697;
+  }
+  .msg-input {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+  }
+  .msg-input input {
+    flex: 1;
+    border: 1px solid #e8d3c0;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #2b180a;
+    background: white;
+    outline: none;
+  }
+  .msg-input input::placeholder { color: #94877c; }
+</style>
+
+<!-- SVG icon defs (inline, Lucide-style) -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-clock-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+    <symbol id="i-thumbup" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></symbol>
+    <symbol id="i-thumbdown" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3h6v7l5 8a2 2 0 0 1-1.7 3H5.7A2 2 0 0 1 4 18l5-8V3z"/><line x1="9" y1="3" x2="15" y2="3"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 8l7-5 7 5"/><path d="M3 13l2-5 2 5"/><path d="M17 13l2-5 2 5"/><circle cx="5" cy="13" r="2"/><circle cx="19" cy="13" r="2"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ VIEW 1: HOME / FEED ============ -->
+<div class="section">
+  <h3>1. Home — Evidence Feed</h3>
+  <p class="subtitle">Default landing after onboarding. Grid of paper cards with specialty headers, filter tabs.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item active"><svg><use href="#i-home"/></svg> Home</div>
+      <div class="nav-item"><svg><use href="#i-plus"/></svg> New Chat</div>
+      <div class="nav-item"><svg><use href="#i-book"/></svg> Library</div>
+      <div class="nav-item"><svg><use href="#i-clock"/></svg> History</div>
+      <div class="nav-item"><svg><use href="#i-user"/></svg> Profile</div>
+      <hr class="sidebar-divider">
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart failure</div>
+      <div class="recent-item">CAR-T therapy durability data</div>
+      <div class="recent-item">TMS protocol comparison</div>
+    </div>
+    <div class="app-main">
+      <span class="view-badge">Home</span>
+      <div class="app-main-inner">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <span class="page-title">Discover</span>
+          <div class="feed-tabs">
+            <span class="feed-tab active">For You</span>
+            <span class="feed-tab">Trending</span>
+            <span class="feed-tab">Specialties</span>
+          </div>
+        </div>
+        <div class="feed-grid">
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#6b7280;">Psychiatry</div>
+            <div class="feed-card-body">
+              <h4>Stanford's 5-Day Brain Stimulation Protocol Achieves 90% Remission</h4>
+              <p>A revolutionary 5-day protocol using fMRI-guided TMS achieved 90.5% remission in treatment-resistant depression.</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+              <div class="action-icons"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#ea580c;">Cardiology</div>
+            <div class="feed-card-body">
+              <h4>GLP-1 Receptor Agonists Reduce Major Adverse Cardiac Events by 14%</h4>
+              <p>Large-scale trial demonstrates semaglutide significantly reduces MACE in patients with established cardiovascular disease.</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+              <div class="action-icons"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#d97706;">Oncology</div>
+            <div class="feed-card-body">
+              <h4>CAR-T Shows Durable Remission in Relapsed Lymphoma</h4>
+              <p>5-year follow-up confirms sustained complete response in 40% of patients with relapsed large B-cell lymphoma.</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star empty"><use href="#i-star-empty"/></svg></div>
+              <div class="action-icons"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+            </div>
+          </div>
+          <div class="feed-card">
+            <div class="feed-card-header" style="background:#f59e0b;">Pediatrics</div>
+            <div class="feed-card-body">
+              <h4>Early Peanut Introduction Reduces Allergy Risk by 77%</h4>
+              <p>LEAP follow-up study confirms lasting protection from peanut allergy with early introduction in high-risk infants.</p>
+            </div>
+            <div class="feed-card-footer">
+              <div class="stars"><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg><svg class="star"><use href="#i-star"/></svg></div>
+              <div class="action-icons"><svg><use href="#i-heart"/></svg><svg><use href="#i-bookmark"/></svg><svg><use href="#i-clock-sm"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 2: NEW CHAT / SEARCH ============ -->
+<div class="section">
+  <h3>2. New Chat — Search Landing</h3>
+  <p class="subtitle">Centered search with suggestion chips. Transitions to chat thread on submit.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><svg><use href="#i-home"/></svg> Home</div>
+      <div class="nav-item active"><svg><use href="#i-plus"/></svg> New Chat</div>
+      <div class="nav-item"><svg><use href="#i-book"/></svg> Library</div>
+      <div class="nav-item"><svg><use href="#i-clock"/></svg> History</div>
+      <div class="nav-item"><svg><use href="#i-user"/></svg> Profile</div>
+      <hr class="sidebar-divider">
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart failure</div>
+      <div class="recent-item">CAR-T therapy durability data</div>
+    </div>
+    <div class="app-main">
+      <span class="view-badge">New Chat</span>
+      <div class="app-main-inner">
+        <div class="search-center">
+          <div class="search-logo">SciSpark</div>
+          <div class="search-box">
+            <svg><use href="#i-search"/></svg>
+            <span>Ask about clinical evidence, treatments, guidelines...</span>
+          </div>
+          <div class="search-chips">
+            <div class="chip"><svg><use href="#i-flask"/></svg> Compare treatments</div>
+            <div class="chip"><svg><use href="#i-list"/></svg> Summarize RCT</div>
+            <div class="chip"><svg><use href="#i-file"/></svg> Find guidelines</div>
+            <div class="chip"><svg><use href="#i-scale"/></svg> Risk vs benefit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 3: CHAT + SOURCES ============ -->
+<div class="section">
+  <h3>3. Chat Thread — Answer + Sources Panel</h3>
+  <p class="subtitle">AI answer with inline citations. "Sources" button toggles right panel. Follow-ups below.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><svg><use href="#i-home"/></svg> Home</div>
+      <div class="nav-item"><svg><use href="#i-plus"/></svg> New Chat</div>
+      <div class="nav-item"><svg><use href="#i-book"/></svg> Library</div>
+      <div class="nav-item"><svg><use href="#i-clock"/></svg> History</div>
+      <div class="nav-item"><svg><use href="#i-user"/></svg> Profile</div>
+      <hr class="sidebar-divider">
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item current">Latest research trends in...</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart failure</div>
+      <div class="recent-item">CAR-T therapy durability data</div>
+    </div>
+    <div class="app-main" style="flex:1;">
+      <span class="view-badge">Chat + Sources</span>
+      <div class="app-main-inner" style="overflow-y:auto;">
+        <div class="chat-question">What are the latest research trends in health and wellness in 2025?</div>
+        <div class="chat-answer">
+          <h3>Personalized medicine and genomics</h3>
+          <p>In 2025, health research is centering on tech-enabled personalization, metabolic and brain health, and prevention at both individual and population levels. <span class="cite">pmc.ncbi.nlm.nih +1</span></p>
+          <h3>Tech-enabled self-tracking</h3>
+          <p>Researchers emphasize consumer wearables, at-home sensors, and apps that monitor key health metrics and manage chronic disease outside clinics. This is feeding into a broader shift toward <strong>personalized</strong> and preventive care. <span class="cite">pmc.ncbi.nlm.nih +2</span></p>
+        </div>
+        <div class="action-bar">
+          <svg><use href="#i-share"/></svg>
+          <svg><use href="#i-download"/></svg>
+          <svg><use href="#i-copy"/></svg>
+          <span class="sources-btn"><svg><use href="#i-file"/></svg> 12 sources</span>
+          <span class="thumbs"><svg><use href="#i-thumbup"/></svg><svg><use href="#i-thumbdown"/></svg></span>
+        </div>
+        <div class="followups">
+          <div class="followup"><svg><use href="#i-arrow-right"/></svg> Compare personalized medicine approaches across specialties</div>
+          <div class="followup"><svg><use href="#i-arrow-right"/></svg> What wearable devices have the strongest clinical evidence?</div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <svg><use href="#i-plus"/></svg>
+        <span>Ask a follow-up...</span>
+        <svg style="margin-left:auto;color:#f97316;"><use href="#i-arrow-right"/></svg>
+      </div>
+    </div>
+    <div class="app-sources">
+      <div class="src-header">12 sources <svg class="src-close"><use href="#i-x"/></svg></div>
+      <div class="src-item"><div class="src-domain"><span class="src-dot"></span> pmc.ncbi.nlm.nih</div><div class="src-name">A Decade of Progress: A Bibliometric Analysis of Green Safety and Health...</div></div>
+      <div class="src-item"><div class="src-domain"><span class="src-dot"></span> linkinghub.elsevier</div><div class="src-name">Global age-sex-specific mortality and life expectancy estimates for 204 countries...</div></div>
+      <div class="src-item"><div class="src-domain"><span class="src-dot"></span> academic.oup</div><div class="src-name">P1259 A 15-year analysis of Inflammatory Bowel Disease in Africa using Google Trends</div></div>
+      <div class="src-item"><div class="src-domain"><span class="src-dot"></span> ieeexplore.ieee</div><div class="src-name">Automated Approaches For Detecting And Classifying Colon Cancer: A Comprehensive Study</div></div>
+      <div class="src-item"><div class="src-domain"><span class="src-dot"></span> link.springer</div><div class="src-name">Catalytic materials applied for dye removal in advanced oxidation processes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 4: LIBRARY ============ -->
+<div class="section">
+  <h3>4. Library — Saved Papers</h3>
+  <p class="subtitle">Tabs for Saved / Liked / Read Later. List view with specialty color accent bars.</p>
+  <div class="app-shell">
+    <div class="app-sidebar">
+      <div class="logo">SciSpark</div>
+      <div class="nav-item"><svg><use href="#i-home"/></svg> Home</div>
+      <div class="nav-item"><svg><use href="#i-plus"/></svg> New Chat</div>
+      <div class="nav-item active"><svg><use href="#i-book"/></svg> Library</div>
+      <div class="nav-item"><svg><use href="#i-clock"/></svg> History</div>
+      <div class="nav-item"><svg><use href="#i-user"/></svg> Profile</div>
+      <hr class="sidebar-divider">
+      <div class="recent-label">Recent Chats</div>
+      <div class="recent-item">GLP-1 vs SGLT2 for heart failure</div>
+      <div class="recent-item">CAR-T therapy durability data</div>
+    </div>
+    <div class="app-main">
+      <span class="view-badge">Library</span>
+      <div class="app-main-inner">
+        <div class="page-title" style="margin-bottom:20px;">Library</div>
+        <div class="lib-tabs">
+          <div class="lib-tab active">Saved</div>
+          <div class="lib-tab">Liked</div>
+          <div class="lib-tab">Read Later</div>
+        </div>
+        <div class="lib-item">
+          <div class="lib-bar" style="background:#6b7280;"></div>
+          <div class="lib-body">
+            <h4>Stanford's 5-Day Brain Stimulation Protocol Achieves 90% Remission</h4>
+            <p>Am J Psychiatry <span class="lib-meta-sep">·</span> 2020 <span class="lib-meta-sep">·</span> Psychiatry <span class="lib-meta-sep">·</span> <svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg></p>
+          </div>
+        </div>
+        <div class="lib-item">
+          <div class="lib-bar" style="background:#ea580c;"></div>
+          <div class="lib-body">
+            <h4>GLP-1 Receptor Agonists Reduce Major Adverse Cardiac Events by 14%</h4>
+            <p>NEJM <span class="lib-meta-sep">·</span> 2025 <span class="lib-meta-sep">·</span> Cardiology <span class="lib-meta-sep">·</span> <svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg></p>
+          </div>
+        </div>
+        <div class="lib-item">
+          <div class="lib-bar" style="background:#d97706;"></div>
+          <div class="lib-body">
+            <h4>CAR-T Therapy Shows Durable Remission in Relapsed Lymphoma</h4>
+            <p>Lancet Oncol <span class="lib-meta-sep">·</span> 2025 <span class="lib-meta-sep">·</span> Oncology <span class="lib-meta-sep">·</span> <svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#e8d3c0;vertical-align:middle;"><use href="#i-star-empty"/></svg></p>
+          </div>
+        </div>
+        <div class="lib-item">
+          <div class="lib-bar" style="background:#f59e0b;"></div>
+          <div class="lib-body">
+            <h4>Early Peanut Introduction Reduces Allergy Risk by 77%</h4>
+            <p>NEJM <span class="lib-meta-sep">·</span> 2024 <span class="lib-meta-sep">·</span> Pediatrics <span class="lib-meta-sep">·</span> <svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg><svg style="width:10px;height:10px;color:#dab697;vertical-align:middle;"><use href="#i-star"/></svg></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 5: ONBOARDING ============ -->
+<div class="section">
+  <h3>5. Onboarding — Conversational AI</h3>
+  <p class="subtitle">No sidebar. AI asks questions one at a time with selection chips + custom input option. Responses saved to user profile for personalization.</p>
+  <div class="app-shell" style="height:500px;">
+    <div class="app-main" style="flex:1;background:#fefaf5;">
+      <span class="view-badge">Onboarding</span>
+      <div class="app-main-inner">
+        <div class="onboard-wrapper">
+          <div class="onboard-logo">SciSpark</div>
+
+          <div class="msg">
+            <div class="msg-ai">
+              Welcome to SciSpark! I'm your clinical evidence assistant. Let me personalize your experience.<br><br>What's your primary <strong>clinical specialty</strong>?
+            </div>
+            <div class="msg-options">
+              <div class="msg-opt">Cardiology</div>
+              <div class="msg-opt">Oncology</div>
+              <div class="msg-opt">Psychiatry</div>
+              <div class="msg-opt">Neurology</div>
+              <div class="msg-opt">Pediatrics</div>
+              <div class="msg-opt">Internal Medicine</div>
+            </div>
+            <div class="msg-input"><input placeholder="Or type your specialty..." readonly></div>
+          </div>
+
+          <div class="msg">
+            <div class="msg-user">Cardiology</div>
+          </div>
+
+          <div class="msg">
+            <div class="msg-ai">
+              Great choice! And what's your <strong>role</strong>?
+            </div>
+            <div class="msg-options">
+              <div class="msg-opt">Attending Physician</div>
+              <div class="msg-opt">Researcher</div>
+              <div class="msg-opt">Resident</div>
+              <div class="msg-opt">Fellow</div>
+              <div class="msg-opt">NP / PA</div>
+            </div>
+            <div class="msg-input"><input placeholder="Or type your role..." readonly></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
