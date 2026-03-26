@@ -67,11 +67,11 @@ export function DigestShowcase() {
             transition={{ duration: 0.7, ease: EASE_CARD }}
           >
             <BrowserMockup>
-              <div className="relative h-[480px] overflow-hidden">
+              <div className="relative h-[520px] overflow-y-auto overflow-x-hidden scrollbar-hide">
                 {/* Scale the content down to look like a zoomed-out product screenshot */}
                 <div
-                  className="origin-top-left p-6 space-y-4 pb-20"
-                  style={{ transform: "scale(0.55)", width: "182%"  }}
+                  className="origin-top-left p-6 space-y-4 pb-16"
+                  style={{ transform: "scale(0.55)", width: "182%" }}
                 >
 
                   {/* ── Paper Header ── */}
@@ -216,19 +216,16 @@ export function DigestShowcase() {
                   </div>
                 </div>
 
-                {/* ── Bottom fade gradient ── */}
-                <div className="absolute bottom-11 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-
-                {/* ── Sticky AI Chatbox ── */}
-                <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#e8d3c0]/30 px-4 py-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <Sparkles size={16} className="text-orange flex-shrink-0" />
-                    <div className="flex-1 bg-[#faf6f2] rounded-full px-4 py-2 flex items-center">
-                      <span className="text-xs text-[#94877c]">Ask AI about this paper...</span>
-                    </div>
-                    <div className="w-8 h-8 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
-                      <Send size={14} className="text-white" />
-                    </div>
+              </div>
+              {/* ── AI Chatbox (pinned below scrollable area) ── */}
+              <div className="bg-white border-t border-[#e8d3c0]/30 px-4 py-2.5">
+                <div className="flex items-center gap-2.5">
+                  <Sparkles size={16} className="text-orange flex-shrink-0" />
+                  <div className="flex-1 bg-[#faf6f2] rounded-full px-4 py-2 flex items-center">
+                    <span className="text-xs text-[#94877c]">Ask AI about this paper...</span>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
+                    <Send size={14} className="text-white" />
                   </div>
                 </div>
               </div>
