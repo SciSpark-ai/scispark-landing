@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, ThumbsUp, ThumbsDown, Send, Code, FileText } from "lucide-react";
+import { Sparkles, Heart, Bookmark, Clock, Share2, ExternalLink, Copy, Send, Code, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EASE_CARD } from "@/components/motion/variants";
 import { BrowserMockup } from "@/components/sections/BrowserMockup";
@@ -220,19 +220,6 @@ export function DigestShowcase() {
                     </div>
                   </div>
 
-                  {/* ── Relevance Feedback ── */}
-                  <div className="bg-[#faf6f2] rounded-2xl p-5 text-center">
-                    <span className="font-body font-semibold text-sm text-[#2b180a]">Is this paper relevant to you?</span>
-                    <p className="text-xs text-[#94877c] mt-1">Giving feedback helps us give you better recommendations.</p>
-                    <div className="flex justify-center gap-3 mt-3">
-                      <span className="flex items-center gap-1.5 text-xs px-5 py-2 rounded-full border border-[#e8d3c0] text-[#94877c]">
-                        <ThumbsUp size={12} /> Yes
-                      </span>
-                      <span className="flex items-center gap-1.5 text-xs px-5 py-2 rounded-full border border-[#e8d3c0] text-[#94877c]">
-                        <ThumbsDown size={12} /> No
-                      </span>
-                    </div>
-                  </div>
                 </div>
 
               </div>
