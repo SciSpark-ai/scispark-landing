@@ -1,15 +1,11 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { feedContainer, feedCardReveal } from "@/components/motion/variants";
-import { PaperCard } from "./PaperCard";
-import { PaperDigest } from "./PaperDigest";
-import { samplePapers, type PaperCardData } from "./paper-data";
+import { EASE_CARD } from "@/components/motion/variants";
+import { CardStack } from "./CardStack";
 
 export function EvidenceFeed() {
   const t = useTranslations("showcase.feed");
-  const [selectedPaper, setSelectedPaper] = useState<PaperCardData | null>(null);
 
   const bullets = [
     t("desc1"),
@@ -28,7 +24,7 @@ export function EvidenceFeed() {
             initial={{ opacity: 0, x: -148 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: EASE_CARD }}
           >
             <h2 className="font-heading text-[32px] md:text-[40px] lg:text-[48px] font-normal tracking-heading leading-[110%] text-espresso mb-8">
               {t("headline")}
@@ -46,50 +42,17 @@ export function EvidenceFeed() {
             </ul>
           </motion.div>
 
-          {/* Right column — scrollable feed */}
+          {/* Right column — card stack */}
           <motion.div
             initial={{ opacity: 0, x: 148 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: EASE_CARD }}
           >
-            <div className="overflow-x-auto pb-4 -mr-6 lg:-mr-16 scrollbar-hide">
-              <motion.div
-                variants={feedContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                className="flex gap-5 pl-1 pr-6 lg:pr-16"
-              >
-                {samplePapers.map((paper) => (
-                  <motion.div key={paper.id} variants={feedCardReveal}>
-                    <PaperCard
-                      paper={paper}
-                      onCardClick={setSelectedPaper}
-                      showTooltip
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Mobile hint */}
-            <p className="text-sm text-muted-text/60 mt-3 lg:hidden">
-              Swipe to see more &rarr;
-            </p>
+            <CardStack />
           </motion.div>
         </div>
       </div>
-
-      {/* Paper digest overlay */}
-      <AnimatePresence>
-        {selectedPaper && (
-          <PaperDigest
-            paper={selectedPaper}
-            onClose={() => setSelectedPaper(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
