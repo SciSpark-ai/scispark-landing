@@ -63,31 +63,42 @@ export function ChatMockup() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [currentStep, setCurrentStep] = useState(0);
   const [stepComplete, setStepComplete] = useState<boolean[]>([false, false, false, false]);
-  const triggered = useRef(false);
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: false, margin: "-80px" });
+  const loopTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => {
-    if (!isInView || triggered.current) return;
-    triggered.current = true;
+  const clearAllTimers = useCallback(() => {
+    loopTimers.current.forEach(clearTimeout);
+    loopTimers.current = [];
+  }, []);
+
+  const resetState = useCallback(() => {
+    setPhase("idle");
+    setCurrentStep(0);
+    setStepComplete([false, false, false, false]);
+  }, []);
+
+  const runSequence = useCallback(() => {
+    clearAllTimers();
+    resetState();
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     // 0.8s: show user question
-    const t1 = setTimeout(() => setPhase("user-q"), 800);
+    timers.push(setTimeout(() => setPhase("user-q"), 800));
 
     // 2.3s: start reasoning
-    const t2 = setTimeout(() => {
+    timers.push(setTimeout(() => {
       setPhase("reasoning");
       setCurrentStep(0);
-    }, 2300);
+    }, 2300));
 
     // Schedule each reasoning step
     let cumulativeDelay = 2300;
-    const stepTimers: ReturnType<typeof setTimeout>[] = [];
-
     reasoningSteps.forEach((step, idx) => {
       cumulativeDelay += step.duration;
       const d = cumulativeDelay;
-      const timer = setTimeout(() => {
+      timers.push(setTimeout(() => {
         setStepComplete((prev) => {
           const next = [...prev];
           next[idx] = true;
@@ -96,25 +107,33 @@ export function ChatMockup() {
         if (idx < reasoningSteps.length - 1) {
           setCurrentStep(idx + 1);
         }
-      }, d);
-      stepTimers.push(timer);
+      }, d));
     });
 
     // After all steps done → answer (0.4s delay)
     const answerDelay = cumulativeDelay + 400;
-    const t3 = setTimeout(() => setPhase("answer"), answerDelay);
+    timers.push(setTimeout(() => setPhase("answer"), answerDelay));
 
     // 3s after answer → followup
-    const t4 = setTimeout(() => setPhase("followup"), answerDelay + 3000);
+    const followupDelay = answerDelay + 3000;
+    timers.push(setTimeout(() => setPhase("followup"), followupDelay));
 
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      stepTimers.forEach(clearTimeout);
-    };
-  }, [isInView]);
+    // 5s after followup → restart the loop
+    const restartDelay = followupDelay + 5000;
+    timers.push(setTimeout(() => runSequence(), restartDelay));
+
+    loopTimers.current = timers;
+  }, [clearAllTimers, resetState]);
+
+  useEffect(() => {
+    if (isInView) {
+      runSequence();
+    } else {
+      clearAllTimers();
+      resetState();
+    }
+    return clearAllTimers;
+  }, [isInView, runSequence, clearAllTimers, resetState]);
 
   const showReasoning = phase === "reasoning" || phase === "answer" || phase === "followup";
   const showAnswer = phase === "answer" || phase === "followup";
