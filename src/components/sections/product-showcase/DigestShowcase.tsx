@@ -136,6 +136,21 @@ export function DigestShowcase() {
                     </div>
                   </div>
 
+                  {/* ── Figure Digest ── */}
+                  <div className="bg-[#faf6f2] rounded-2xl p-5">
+                    <span className="font-body font-semibold text-base text-[#2b180a]">Figure Digest</span>
+                    <div className="mt-3 grid grid-cols-2 gap-3">
+                      <div className="bg-[#e8d3c0]/40 rounded-lg h-20 flex items-center justify-center">
+                        <span className="text-xs text-[#94877c]">Figure 1</span>
+                      </div>
+                      <div className="space-y-2 flex flex-col justify-center">
+                        <PlaceholderLine width="90%" />
+                        <PlaceholderLine width="70%" />
+                        <PlaceholderLine width="80%" />
+                      </div>
+                    </div>
+                  </div>
+
                   {/* ── Key Breakpoints & Methods ── */}
                   <div className="bg-[#faf6f2] rounded-2xl p-5">
                     <span className="font-body font-semibold text-base text-[#2b180a]">Key Breakpoints &amp; Methods</span>
@@ -151,21 +166,6 @@ export function DigestShowcase() {
                           </div>
                         </div>
                       ))}
-                    </div>
-                  </div>
-
-                  {/* ── Figure Digest ── */}
-                  <div className="bg-[#faf6f2] rounded-2xl p-5">
-                    <span className="font-body font-semibold text-base text-[#2b180a]">Figure Digest</span>
-                    <div className="mt-3 grid grid-cols-2 gap-3">
-                      <div className="bg-[#e8d3c0]/40 rounded-lg h-20 flex items-center justify-center">
-                        <span className="text-xs text-[#94877c]">Figure 1</span>
-                      </div>
-                      <div className="space-y-2 flex flex-col justify-center">
-                        <PlaceholderLine width="90%" />
-                        <PlaceholderLine width="70%" />
-                        <PlaceholderLine width="80%" />
-                      </div>
                     </div>
                   </div>
 
