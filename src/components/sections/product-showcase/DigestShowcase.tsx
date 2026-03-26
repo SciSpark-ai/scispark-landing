@@ -67,11 +67,21 @@ export function DigestShowcase() {
             transition={{ duration: 0.7, ease: EASE_CARD }}
           >
             <BrowserMockup>
-              <div className="relative h-[520px] overflow-y-auto overflow-x-hidden scrollbar-hide">
-                {/* Scale the content down to look like a zoomed-out product screenshot */}
+              <div className="relative max-h-[520px] overflow-y-auto overflow-x-hidden scrollbar-hide bg-white">
+                {/* Scale trick: inner div is full-size, CSS scale shrinks it visually.
+                    We use a negative margin-bottom to collapse the extra whitespace
+                    left by transform (which doesn't affect layout). */}
                 <div
-                  className="origin-top-left p-6 space-y-4 pb-16"
+                  className="origin-top-left p-6 space-y-4"
                   style={{ transform: "scale(0.55)", width: "182%" }}
+                  ref={(el) => {
+                    // Dynamically set margin-bottom to collapse unscaled whitespace
+                    if (el) {
+                      const fullH = el.scrollHeight;
+                      const scaledH = fullH * 0.55;
+                      el.style.marginBottom = `-${fullH - scaledH}px`;
+                    }
+                  }}
                 >
 
                   {/* ── Paper Header ── */}
