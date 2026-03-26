@@ -102,7 +102,7 @@ export function DigestShowcase() {
                     </div>
                     {/* Author pills */}
                     <div className="flex gap-2 mt-3">
-                      {[0, 1, 2, 3].map((i) => (
+                      {[0, 1, 2].map((i) => (
                         <span key={i} className="text-xs px-3 py-1 rounded-full border border-[#e8d3c0] text-[#94877c]">Author Name</span>
                       ))}
                     </div>
