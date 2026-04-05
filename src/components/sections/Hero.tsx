@@ -14,7 +14,8 @@ export function Hero() {
         <motion.div initial="hidden" animate="visible">
           {/* Kicker badge */}
           <motion.div variants={heroElement} className="mb-6">
-            <span className="inline-block px-4 py-1.5 rounded-badge bg-light-surface text-sm font-body font-medium text-muted-text">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-badge bg-light-surface text-sm font-body font-medium text-muted-text">
+              <span className="px-1.5 py-0.5 rounded bg-orange text-white text-xs font-semibold leading-none">New</span>
               {t("kicker")}
             </span>
           </motion.div>

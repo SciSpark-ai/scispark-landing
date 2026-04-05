@@ -9,7 +9,8 @@ import {
   FileText,
   Brain,
   CheckCircle2,
-  Send,
+  Plus,
+  ArrowUp,
 } from "lucide-react";
 
 type Phase = "idle" | "user-q" | "reasoning" | "answer" | "followup";
@@ -159,7 +160,7 @@ export function ChatMockup() {
   return (
     <div
       ref={ref}
-      className="bg-card-surface rounded-card overflow-hidden border border-border-warm/30 shadow-lg"
+      className="bg-card-surface rounded-card overflow-hidden border border-border-warm/30 shadow-lg max-w-4xl mx-auto"
     >
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-3 bg-light-surface border-b border-border-warm/20">
@@ -178,7 +179,7 @@ export function ChatMockup() {
         </div>
       </div>
 
-      {/* Messages area — fixed height, scrolls */}
+      {/* Messages area — flex-1 fills remaining height, scrolls */}
       <div ref={messagesRef} className="p-4 space-y-4 h-[420px] overflow-y-auto scrollbar-hide">
         {/* User question */}
         <AnimatePresence>
@@ -329,14 +330,15 @@ export function ChatMockup() {
         </AnimatePresence>
       </div>
 
-      {/* Input bar */}
-      <div className="px-4 pb-4">
-        <div className="flex items-center gap-2 bg-light-surface rounded-btn px-4 py-2.5 border border-border-warm/30">
-          <span className="font-body text-sm text-muted-text/50 flex-1">
-            Ask a follow-up question...
-          </span>
-          <div className="w-7 h-7 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
-            <Send className="w-3.5 h-3.5 text-white" strokeWidth={2} />
+      {/* Input bar — matches Digest chatbox style */}
+      <div className="bg-page-warm border-t border-[#e8d3c0]/30 px-4 py-3">
+        <div className="bg-white rounded-2xl border border-[#e8d3c0]/30 px-4 pt-3 pb-2.5">
+          <span className="text-xs text-[#94877c]">Ask a follow-up question...</span>
+          <div className="flex items-center justify-between mt-3">
+            <Plus size={14} className="text-[#94877c]" />
+            <div className="w-7 h-7 rounded-full bg-[#e8d3c0]/50 flex items-center justify-center">
+              <ArrowUp size={13} className="text-[#94877c]" />
+            </div>
           </div>
         </div>
       </div>

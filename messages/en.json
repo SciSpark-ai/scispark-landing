@@ -7,7 +7,7 @@
     "cta": "Get Early Access"
   },
   "hero": {
-    "kicker": "AI-Powered Clinical Evidence",
+    "kicker": "AI-Powered Evidence-Based Clinical Research Assistant",
     "headline": "Never miss a breakthrough that could save lives",
     "subhead": "An AI agent that finds the most relevant studies for you and your patients — grounded in evidence-based medicine, personalized to your clinical context.",
     "ctaPrimary": "Get Early Access",
@@ -50,10 +50,10 @@
     },
     "digest": {
       "headline": "Open any paper. Get the full picture in seconds.",
-      "desc1": "AI-generated lay summary and original abstract toggle",
-      "desc2": "Structured key breakpoints: research question, data, and results",
-      "desc3": "Ask AI follow-up questions — answered in context with citations",
-      "desc4": "Figure digest with key charts and tables from the paper"
+      "desc1": "AI-generated lay summary",
+      "desc2": "Key figure and table digest from the paper",
+      "desc3": "Structured key breakpoints: research question, data, method, result, and clinical implication",
+      "desc4": "Follow-up questions answered in context with citations"
     }
   },
   "howItWorks": {
