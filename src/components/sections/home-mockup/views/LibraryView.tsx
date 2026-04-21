@@ -32,6 +32,7 @@ export function LibraryView() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
+            type="button"
             className={`px-4 py-[7px] text-[13px] font-medium rounded-pill transition-colors ${
               activeTab === tab.id ? "bg-orange text-white" : "bg-card-surface text-muted-text"
             }`}

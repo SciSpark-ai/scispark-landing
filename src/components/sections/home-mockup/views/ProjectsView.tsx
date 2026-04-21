@@ -12,7 +12,10 @@ export function ProjectsView() {
     <div className="p-7">
       <div className="flex items-center justify-between">
         <h1 className="font-heading text-[28px] text-espresso tracking-heading">{t("title")}</h1>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-orange text-white rounded-[10px] text-[14px] font-medium hover:bg-orange/90 transition-colors">
+        <button
+          type="button"
+          className="flex items-center gap-2 px-4 py-2.5 bg-orange text-white rounded-[10px] text-[14px] font-medium hover:bg-orange/90 transition-colors"
+        >
           <Plus size={16} />
           {t("newProject")}
         </button>

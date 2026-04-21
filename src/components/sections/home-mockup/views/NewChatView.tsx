@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Search, ArrowUp, Plus, GitCompare, FileText, Scale } from "lucide-react";
 
@@ -7,6 +7,7 @@ export function NewChatView() {
   const t = useTranslations("homeMockup.chat");
   const [query, setQuery] = useState("");
   const [flash, setFlash] = useState(false);
+  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const suggestions = [
     { key: "chipCompare", icon: GitCompare },
@@ -18,8 +19,15 @@ export function NewChatView() {
   function handleChip(label: string) {
     setQuery(label);
     setFlash(true);
-    setTimeout(() => setFlash(false), 200);
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+    flashTimer.current = setTimeout(() => setFlash(false), 200);
   }
+
+  useEffect(() => {
+    return () => {
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+    };
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-[560px]">
@@ -68,6 +76,7 @@ export function NewChatView() {
               <button
                 key={s.key}
                 onClick={() => handleChip(label)}
+                type="button"
                 className="bg-card-surface border border-border-warm rounded-pill px-3 py-1.5 text-[13px] text-espresso hover:bg-border-warm transition-colors flex items-center gap-1.5 whitespace-nowrap"
               >
                 <Icon size={14} className="text-orange" />

@@ -41,6 +41,7 @@ export function HomeView() {
             <button
               key={value}
               onClick={() => setActiveTab(value)}
+              type="button"
               className={`pb-2 px-1 text-[14px] tracking-body border-b-2 transition-colors ${
                 activeTab === value
                   ? "text-espresso font-medium border-orange"

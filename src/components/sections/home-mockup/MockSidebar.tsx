@@ -30,14 +30,16 @@ export function MockSidebar({ activeView, onNavigate, compact = false, onClose }
     <aside className="w-full h-full bg-page-warm flex flex-col p-3">
       {/* Top: toggle + wordmark */}
       <div className="mb-3 flex items-center gap-3 flex-shrink-0">
-        <button
-          onClick={onClose}
-          className="px-3 py-2.5 text-muted-text hover:text-espresso transition-colors rounded-[10px] hover:bg-card-surface/50 flex items-center flex-shrink-0"
-          aria-label="Collapse sidebar"
-          type="button"
-        >
-          <PanelLeftClose size={18} strokeWidth={1.8} />
-        </button>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="px-3 py-2.5 text-muted-text hover:text-espresso transition-colors rounded-[10px] hover:bg-card-surface/50 flex items-center flex-shrink-0"
+            aria-label="Collapse sidebar"
+            type="button"
+          >
+            <PanelLeftClose size={18} strokeWidth={1.8} />
+          </button>
+        )}
         {!compact && (
           <span className="font-heading text-[22px] text-espresso tracking-heading leading-none whitespace-nowrap">
             SciSpark
