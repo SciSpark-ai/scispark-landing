@@ -91,5 +91,68 @@
     "privacy": "隐私政策",
     "terms": "服务条款",
     "contact": "联系我们"
+  },
+  "homeMockup": {
+    "ariaLabel": "产品预览",
+    "sidebar": {
+      "navHome": "主页",
+      "navChat": "新对话",
+      "navProjects": "项目",
+      "navLibrary": "收藏",
+      "navHistory": "历史",
+      "recentChats": "最近对话"
+    },
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "home": {
+      "tabForYou": "为你推荐",
+      "tabTrending": "趋势",
+      "tabBySpecialty": "按专科",
+      "newResearch": "最新研究",
+      "yourWeek": "本周动态",
+      "papersThisWeek": "本周论文",
+      "diffVsLastWeek": "较上周",
+      "newInInterests": "条关注领域更新",
+      "trendingInFields": "个研究方向热门",
+      "savedUnread": "条已收藏未读",
+      "trendingTopics": "热门主题",
+      "readingStreak": "连续阅读",
+      "dayStreak": "天连续阅读",
+      "best": "最佳",
+      "moreToBeatRecord": "天即可打破纪录"
+    },
+    "chat": {
+      "tagline": "AI 驱动的临床证据助手",
+      "placeholder": "询问临床证据、治疗方案、指南…",
+      "chipCompare": "对比治疗方案",
+      "chipSummarize": "总结 RCT",
+      "chipGuidelines": "查找指南",
+      "chipRisk": "风险收益评估"
+    },
+    "projects": {
+      "title": "项目",
+      "description": "将论文、对话和笔记整理为研究项目。",
+      "newProject": "新建项目",
+      "searchPlaceholder": "搜索项目…",
+      "papersLabel": "篇论文",
+      "chatsLabel": "段对话",
+      "createNew": "创建新项目"
+    },
+    "library": {
+      "title": "收藏",
+      "tabSaved": "已收藏",
+      "tabLiked": "已点赞",
+      "tabReadLater": "稍后阅读"
+    },
+    "history": {
+      "title": "历史",
+      "groupToday": "今天",
+      "groupYesterday": "昨天",
+      "groupThisWeek": "本周",
+      "groupEarlier": "更早"
+    }
   }
 }
