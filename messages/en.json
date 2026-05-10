@@ -153,6 +153,28 @@
       "groupYesterday": "Yesterday",
       "groupThisWeek": "This Week",
       "groupEarlier": "Earlier"
+    },
+    "cursorDemo": {
+      "tooltip": {
+        "discover": "Skim today's evidence",
+        "read": "Open the digest",
+        "save": "Add to library",
+        "openChat": "Open chat",
+        "askAnything": "Ask anything",
+        "send": "Send",
+        "project": "Group by case"
+      },
+      "caption": {
+        "discover": "Discover — your daily feed, ranked by relevance.",
+        "read": "Read — paper summaries you can scan in 30 seconds.",
+        "save": "Save — keep what matters within reach.",
+        "ask": "Ask — get cited answers, not just links.",
+        "project": "Project — organize research around a patient or topic."
+      },
+      "chatQuestion": "Latest evidence on SGLT2 inhibitors in HFpEF?",
+      "digest": {
+        "saveLabel": "Save"
+      }
     }
   }
 }

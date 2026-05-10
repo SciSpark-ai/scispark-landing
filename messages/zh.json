@@ -153,6 +153,28 @@
       "groupYesterday": "昨天",
       "groupThisWeek": "本周",
       "groupEarlier": "更早"
+    },
+    "cursorDemo": {
+      "tooltip": {
+        "discover": "浏览今日证据",
+        "read": "打开摘要",
+        "save": "加入收藏",
+        "openChat": "打开对话",
+        "askAnything": "提问任何问题",
+        "send": "发送",
+        "project": "按病例分组"
+      },
+      "caption": {
+        "discover": "发现 — 每日证据流，按相关性排序。",
+        "read": "阅读 — 30 秒读完一篇论文摘要。",
+        "save": "收藏 — 让重要内容触手可及。",
+        "ask": "提问 — 获得有引用的临床答案。",
+        "project": "项目 — 按患者或主题组织研究。"
+      },
+      "chatQuestion": "SGLT2 抑制剂在 HFpEF 中的最新证据？",
+      "digest": {
+        "saveLabel": "收藏"
+      }
     }
   }
 }
