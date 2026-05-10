@@ -46,6 +46,7 @@ export function useCursorDemo(): CursorDemoContextValue {
   return ctx;
 }
 
+/** Optional read — returns null when no provider (e.g. component used in isolation). */
 export function useCursorDemoOptional(): CursorDemoContextValue | null {
   return useContext(CursorDemoContext);
 }
@@ -66,7 +67,7 @@ export function CursorDemoProvider({ children }: CursorDemoProviderProps) {
     mockupRef,
     setActiveViewFromScript: setActiveView,
     setQueryFromScript: setQuery,
-    resolveText: (key) => tDemo(key),
+    resolveText: tDemo,
   });
 
   function setActiveViewFromUser(v: ViewId) {
@@ -89,7 +90,8 @@ export function CursorDemoProvider({ children }: CursorDemoProviderProps) {
       mockupRef,
       cursor,
     }),
-    // setActiveViewFromUser/setQueryFromUser are stable wrt cursor, included via cursor
+    // setActiveViewFromUser/setQueryFromUser are intentionally omitted: they're
+    // re-created each render and would loop deps via `cursor`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeView, query, cursor],
   );
