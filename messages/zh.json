@@ -175,6 +175,36 @@
       "digest": {
         "saveLabel": "收藏"
       }
+    },
+    "paperDigest": {
+      "back": "返回",
+      "publishedIn": "发表于",
+      "citations": "次引用",
+      "viewFullPaper": "查看全文",
+      "like": "喜欢",
+      "save": "收藏",
+      "saved": "已收藏",
+      "readLater": "稍后阅读",
+      "share": "分享",
+      "aiSummary": "AI 摘要",
+      "tabLay": "通俗摘要",
+      "tabAbstract": "原文摘要",
+      "copySummary": "复制摘要",
+      "figureDigest": "图表解读",
+      "keyBreakpoints": "关键节点与方法",
+      "codeLabel": "代码",
+      "dataLabel": "数据",
+      "relatedExtended": "相关与延伸",
+      "relatedTag": "相关",
+      "quickCitation": "快速引用",
+      "copyBibtex": "复制 BibTeX",
+      "copyApa": "复制 APA",
+      "exportZotero": "导出到 Zotero",
+      "relevanceTitle": "这篇论文对你有用吗？",
+      "relevanceSubtitle": "反馈有助于我们推荐更相关的论文。",
+      "relevanceYes": "有用",
+      "relevanceNo": "无关",
+      "originalLabel": "原标题："
     }
   }
 }

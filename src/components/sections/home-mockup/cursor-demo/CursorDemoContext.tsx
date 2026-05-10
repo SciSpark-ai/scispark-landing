@@ -28,7 +28,6 @@ interface CursorDemoContextValue {
     tooltipKey: string | null;
     captionKey: string | null;
     activeBeatIndex: number;
-    digestOpen: boolean;
     digestSaved: boolean;
     ripple: { x: number; y: number; nonce: number } | null;
     mode: ScriptMode;

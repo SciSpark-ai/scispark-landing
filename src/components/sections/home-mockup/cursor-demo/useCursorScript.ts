@@ -22,7 +22,6 @@ export interface UseCursorScriptResult {
   tooltipKey: string | null;
   captionKey: string | null;
   activeBeatIndex: number;
-  digestOpen: boolean;
   digestSaved: boolean;
   ripple: { x: number; y: number; nonce: number } | null;
   mode: ScriptMode;
@@ -81,7 +80,6 @@ export function useCursorScript({
   const [tooltipKey, setTooltipKey] = useState<string | null>(null);
   const [captionKey, setCaptionKey] = useState<string | null>(null);
   const [activeBeatIndex, setActiveBeatIndex] = useState(0);
-  const [digestOpen, setDigestOpen] = useState(false);
   const [digestSaved, setDigestSaved] = useState(false);
   const [ripple, setRipple] = useState<{ x: number; y: number; nonce: number } | null>(null);
   const [mode, setMode] = useState<ScriptMode>("idle");
@@ -90,7 +88,6 @@ export function useCursorScript({
   const cancelTokenRef = useRef(0);
   const pauseSignalRef = useRef<{ resolve?: () => void }>({});
   const mouseLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const digestCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keep modeRef in sync so the async runner can read latest synchronously.
   useEffect(() => {
@@ -166,18 +163,7 @@ export function useCursorScript({
         break;
       case "click":
         fireRipple(targetX, targetY);
-        if (step.target === "feed-card-0") {
-          setDigestSaved(false);
-          setDigestOpen(true);
-        }
-        if (step.target === "digest-save") {
-          setDigestSaved(true);
-          if (digestCloseTimerRef.current) clearTimeout(digestCloseTimerRef.current);
-          digestCloseTimerRef.current = setTimeout(() => {
-            digestCloseTimerRef.current = null;
-            setDigestOpen(false);
-          }, 700);
-        }
+        if (step.target === "digest-save") setDigestSaved(true);
         break;
       case "navigate":
         fireRipple(targetX, targetY);
@@ -225,11 +211,6 @@ export function useCursorScript({
       // Loop: reset to home view before restarting beat 1
       setActiveViewFromScript("home");
       setQueryFromScript("");
-      if (digestCloseTimerRef.current) {
-        clearTimeout(digestCloseTimerRef.current);
-        digestCloseTimerRef.current = null;
-      }
-      setDigestOpen(false);
       setDigestSaved(false);
       await delay(800, token);
     }
@@ -254,15 +235,10 @@ export function useCursorScript({
             // so the script re-arms when the user scrolls back into view.
             cancelTokenRef.current++;
             releasePauseGate();
-            if (digestCloseTimerRef.current) {
-              clearTimeout(digestCloseTimerRef.current);
-              digestCloseTimerRef.current = null;
-            }
             setVisible(false);
             setActiveBeatIndex(0);
             setTooltipKey(null);
             setCaptionKey(null);
-            setDigestOpen(false);
             setDigestSaved(false);
             setModeBoth("idle");
           }
@@ -276,10 +252,6 @@ export function useCursorScript({
       if (mouseLeaveTimerRef.current) {
         clearTimeout(mouseLeaveTimerRef.current);
         mouseLeaveTimerRef.current = null;
-      }
-      if (digestCloseTimerRef.current) {
-        clearTimeout(digestCloseTimerRef.current);
-        digestCloseTimerRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -307,12 +279,7 @@ export function useCursorScript({
   function notifyUserNavigated() {
     cancelTokenRef.current++;
     releasePauseGate();
-    if (digestCloseTimerRef.current) {
-      clearTimeout(digestCloseTimerRef.current);
-      digestCloseTimerRef.current = null;
-    }
     setVisible(false);
-    setDigestOpen(false);
     setDigestSaved(false);
     setTooltipKey(null);
     setCaptionKey(null);
@@ -327,7 +294,6 @@ export function useCursorScript({
     tooltipKey,
     captionKey,
     activeBeatIndex,
-    digestOpen,
     digestSaved,
     ripple,
     mode,

@@ -3,7 +3,7 @@ import { Home, MessageSquarePlus, FolderOpen, BookOpen, Clock, PanelLeftClose } 
 import { useTranslations } from "next-intl";
 import { MOCK_RECENT_CHATS, MOCK_USER } from "./mock-data";
 
-export type ViewId = "home" | "chat" | "projects" | "library" | "history";
+export type ViewId = "home" | "chat" | "projects" | "library" | "history" | "paper";
 
 export const NAV_ITEMS: { id: ViewId; labelKey: string; icon: typeof Home }[] = [
   { id: "home", labelKey: "navHome", icon: Home },

@@ -8,9 +8,9 @@ import { NewChatView } from "./views/NewChatView";
 import { ProjectsView } from "./views/ProjectsView";
 import { LibraryView } from "./views/LibraryView";
 import { HistoryView } from "./views/HistoryView";
+import { PaperDigestView } from "./views/PaperDigestView";
 import { useCursorDemoOptional } from "./cursor-demo/CursorDemoContext";
 import { CursorOverlay } from "./cursor-demo/CursorOverlay";
-import { DigestOverlay } from "./cursor-demo/DigestOverlay";
 
 export function AppShell() {
   const ctx = useCursorDemoOptional();
@@ -30,7 +30,7 @@ export function AppShell() {
       ref={ctx?.mockupRef}
       onMouseEnter={ctx?.cursor.notifyMouseEnter}
       onMouseLeave={ctx?.cursor.notifyMouseLeave}
-      className="relative flex h-[640px] md:h-[720px] bg-page-bg"
+      className="relative flex h-[520px] md:h-[600px] bg-page-bg"
     >
       <div className="hidden md:block lg:hidden w-[60px] flex-shrink-0 border-r border-border-warm overflow-hidden">
         <MockSidebar activeView={activeView} onNavigate={handleNavigate} compact />
@@ -57,6 +57,7 @@ export function AppShell() {
               {activeView === "projects" && <ProjectsView />}
               {activeView === "library" && <LibraryView />}
               {activeView === "history" && <HistoryView />}
+              {activeView === "paper" && <PaperDigestView />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -93,18 +94,15 @@ export function AppShell() {
         )}
       </AnimatePresence>
 
-      {/* Cursor demo layers — only render when context is present (md+ inside HomeMockup) */}
+      {/* Cursor demo overlay — only renders when context is present (md+ inside HomeMockup) */}
       {ctx && (
-        <>
-          <DigestOverlay open={ctx.cursor.digestOpen} saved={ctx.cursor.digestSaved} />
-          <CursorOverlay
-            x={ctx.cursor.x}
-            y={ctx.cursor.y}
-            visible={ctx.cursor.visible}
-            tooltipKey={ctx.cursor.tooltipKey}
-            ripple={ctx.cursor.ripple}
-          />
-        </>
+        <CursorOverlay
+          x={ctx.cursor.x}
+          y={ctx.cursor.y}
+          visible={ctx.cursor.visible}
+          tooltipKey={ctx.cursor.tooltipKey}
+          ripple={ctx.cursor.ripple}
+        />
       )}
     </div>
   );

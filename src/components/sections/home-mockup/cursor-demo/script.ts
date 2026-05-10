@@ -39,7 +39,7 @@ export const SCRIPT: Beat[] = [
     id: "read",
     captionKey: "read",
     steps: [
-      { target: "feed-card-0",  action: { kind: "click" }, dwellMs: 900,  tooltipKey: "read" },
+      { target: "feed-card-0",  action: { kind: "navigate", to: "paper" }, dwellMs: 900, tooltipKey: "read" },
     ],
   },
   {

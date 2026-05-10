@@ -175,6 +175,36 @@
       "digest": {
         "saveLabel": "Save"
       }
+    },
+    "paperDigest": {
+      "back": "Back",
+      "publishedIn": "Published in",
+      "citations": "citations",
+      "viewFullPaper": "View Full Paper",
+      "like": "Like",
+      "save": "Save",
+      "saved": "Saved",
+      "readLater": "Read Later",
+      "share": "Share",
+      "aiSummary": "AI Summary",
+      "tabLay": "Lay Summary",
+      "tabAbstract": "Original Abstract",
+      "copySummary": "Copy Summary",
+      "figureDigest": "Figure Digest",
+      "keyBreakpoints": "Key Breakpoints & Methods",
+      "codeLabel": "Code",
+      "dataLabel": "Data",
+      "relatedExtended": "Related & Extended",
+      "relatedTag": "Related",
+      "quickCitation": "Quick Citation",
+      "copyBibtex": "Copy BibTeX",
+      "copyApa": "Copy APA",
+      "exportZotero": "Export to Zotero",
+      "relevanceTitle": "Is this paper relevant to you?",
+      "relevanceSubtitle": "Giving feedback helps us give you better paper recommendations.",
+      "relevanceYes": "Yes",
+      "relevanceNo": "No",
+      "originalLabel": "Original:"
     }
   }
 }
