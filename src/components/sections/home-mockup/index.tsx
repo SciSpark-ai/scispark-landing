@@ -54,7 +54,9 @@ export function HomeMockup() {
               <AppShell />
             </div>
           </motion.div>
-          <CaptionStripBound />
+          <div className="hidden md:block">
+            <CaptionStripBound />
+          </div>
         </CursorDemoProvider>
       </div>
     </section>
