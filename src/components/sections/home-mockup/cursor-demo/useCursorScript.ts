@@ -45,35 +45,56 @@ async function nextFrame(): Promise<void> {
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
 
-async function findTarget(
+function findVisibleTargetElement(
+  root: HTMLElement,
+  selectorValue: string,
+): HTMLElement | null {
+  // Multiple elements may carry the same target (e.g. sidebar items are rendered
+  // twice: once in the compact md rail and once in the full lg sidebar, with
+  // breakpoint-based `hidden` toggling). Pick the visible one.
+  const elements = Array.from(
+    root.querySelectorAll<HTMLElement>(`[data-cursor-target="${selectorValue}"]`),
+  );
+  return (
+    elements.find((e) => {
+      const r = e.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    }) ?? null
+  );
+}
+
+function rectRelativeToRoot(root: HTMLElement, el: HTMLElement): DOMRect {
+  const rootRect = root.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  return new DOMRect(
+    r.left - rootRect.left,
+    r.top - rootRect.top,
+    r.width,
+    r.height,
+  );
+}
+
+async function findTargetElement(
   root: HTMLElement,
   selectorValue: string,
   retries = 3,
-): Promise<DOMRect | null> {
+): Promise<HTMLElement | null> {
   for (let i = 0; i < retries; i++) {
-    // Multiple elements may carry the same target (e.g. sidebar items are rendered
-    // twice: once in the compact md rail and once in the full lg sidebar, with
-    // breakpoint-based `hidden` toggling). Pick the visible one.
-    const elements = Array.from(
-      root.querySelectorAll<HTMLElement>(`[data-cursor-target="${selectorValue}"]`),
-    );
-    const el = elements.find((e) => {
-      const r = e.getBoundingClientRect();
-      return r.width > 0 && r.height > 0;
-    });
-    if (el) {
-      const rootRect = root.getBoundingClientRect();
-      const r = el.getBoundingClientRect();
-      return new DOMRect(
-        r.left - rootRect.left,
-        r.top - rootRect.top,
-        r.width,
-        r.height,
-      );
-    }
+    const el = findVisibleTargetElement(root, selectorValue);
+    if (el) return el;
     await nextFrame();
   }
   return null;
+}
+
+/** True when the target is comfortably inside the root's viewport (with padding). */
+function isInViewport(root: HTMLElement, el: HTMLElement, padding = 60): boolean {
+  const rootRect = root.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+  return (
+    elRect.top >= rootRect.top + padding &&
+    elRect.bottom <= rootRect.bottom - padding
+  );
 }
 
 export function useCursorScript({
@@ -154,11 +175,28 @@ export function useCursorScript({
     const root = mockupRef.current;
     if (!root) return false;
 
-    const targetRect = await findTarget(root, step.target);
-    if (!targetRect || cancelTokenRef.current !== token) return cancelTokenRef.current === token;
+    const targetEl = await findTargetElement(root, step.target);
+    if (!targetEl || cancelTokenRef.current !== token) {
+      return cancelTokenRef.current === token;
+    }
 
     if (step.tooltipKey) setTooltipKey(step.tooltipKey);
 
+    // Auto-scroll the AppShell's scrollable pane so the target is visible
+    // before the cursor moves to it (otherwise the cursor can vanish below
+    // the fold inside long views like Home or PaperDigest).
+    if (!isInViewport(root, targetEl)) {
+      targetEl.scrollIntoView({
+        behavior: REDUCED_MOTION ? "instant" : "smooth",
+        block: "center",
+      });
+      if (!REDUCED_MOTION) {
+        if (!(await delay(450, token))) return false;
+      }
+    }
+
+    // Re-measure after scroll — the rect changes when the scrollable ancestor moves.
+    const targetRect = rectRelativeToRoot(root, targetEl);
     const targetX = targetRect.left + targetRect.width / 2;
     const targetY = targetRect.top + targetRect.height / 2;
 
