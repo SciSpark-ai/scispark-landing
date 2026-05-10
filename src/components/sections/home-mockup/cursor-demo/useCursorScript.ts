@@ -51,7 +51,16 @@ async function findTarget(
   retries = 3,
 ): Promise<DOMRect | null> {
   for (let i = 0; i < retries; i++) {
-    const el = root.querySelector<HTMLElement>(`[data-cursor-target="${selectorValue}"]`);
+    // Multiple elements may carry the same target (e.g. sidebar items are rendered
+    // twice: once in the compact md rail and once in the full lg sidebar, with
+    // breakpoint-based `hidden` toggling). Pick the visible one.
+    const elements = Array.from(
+      root.querySelectorAll<HTMLElement>(`[data-cursor-target="${selectorValue}"]`),
+    );
+    const el = elements.find((e) => {
+      const r = e.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    });
     if (el) {
       const rootRect = root.getBoundingClientRect();
       const r = el.getBoundingClientRect();
