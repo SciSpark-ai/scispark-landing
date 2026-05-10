@@ -8,9 +8,14 @@ import { NewChatView } from "./views/NewChatView";
 import { ProjectsView } from "./views/ProjectsView";
 import { LibraryView } from "./views/LibraryView";
 import { HistoryView } from "./views/HistoryView";
+import { useCursorDemoOptional } from "./cursor-demo/CursorDemoContext";
 
 export function AppShell() {
-  const [activeView, setActiveView] = useState<ViewId>("home");
+  const ctx = useCursorDemoOptional();
+  const [localView, setLocalView] = useState<ViewId>("home");
+  const activeView = ctx?.activeView ?? localView;
+  const setActiveView = ctx?.setActiveViewFromUser ?? setLocalView;
+
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   function handleNavigate(id: ViewId) {
@@ -19,7 +24,7 @@ export function AppShell() {
   }
 
   return (
-    <div className="relative flex h-[640px] md:h-[720px] bg-page-bg">
+    <div ref={ctx?.mockupRef} className="relative flex h-[640px] md:h-[720px] bg-page-bg">
       {/* md rail — icon-only */}
       <div className="hidden md:block lg:hidden w-[60px] flex-shrink-0 border-r border-border-warm overflow-hidden">
         <MockSidebar activeView={activeView} onNavigate={handleNavigate} compact />
@@ -30,7 +35,7 @@ export function AppShell() {
         <MockSidebar activeView={activeView} onNavigate={handleNavigate} />
       </div>
 
-      {/* Main pane (with mobile top bar stacked above the view) */}
+      {/* Main pane */}
       <main className="flex-1 min-w-0 overflow-y-auto flex flex-col">
         <MockMobileBar onOpenSidebar={() => setMobileSidebarOpen(true)} />
         <div className="flex-1 min-h-0">

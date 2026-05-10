@@ -2,10 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Search, ArrowUp, Plus, GitCompare, FileText, Scale } from "lucide-react";
+import { useCursorDemoOptional } from "../cursor-demo/CursorDemoContext";
 
 export function NewChatView() {
   const t = useTranslations("homeMockup.chat");
-  const [query, setQuery] = useState("");
+  const ctx = useCursorDemoOptional();
+  const [localQuery, setLocalQuery] = useState("");
+  const query = ctx?.query ?? localQuery;
+  const setQuery = ctx?.setQueryFromUser ?? setLocalQuery;
+
   const [flash, setFlash] = useState(false);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -37,7 +42,6 @@ export function NewChatView() {
         </h1>
         <p className="text-[14px] text-muted-text tracking-body mt-1">{t("tagline")}</p>
 
-        {/* Search box — matches AI agent demo input styling */}
         <div className="mt-8">
           <div
             className={`bg-white border rounded-[16px] px-5 pt-4 pb-3 transition-all ${
@@ -69,7 +73,6 @@ export function NewChatView() {
           </div>
         </div>
 
-        {/* Suggestion chips */}
         <div className="flex flex-wrap justify-center gap-2 mt-5">
           {suggestions.map((s) => {
             const Icon = s.icon;
