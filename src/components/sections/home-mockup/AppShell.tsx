@@ -9,6 +9,8 @@ import { ProjectsView } from "./views/ProjectsView";
 import { LibraryView } from "./views/LibraryView";
 import { HistoryView } from "./views/HistoryView";
 import { useCursorDemoOptional } from "./cursor-demo/CursorDemoContext";
+import { CursorOverlay } from "./cursor-demo/CursorOverlay";
+import { DigestOverlay } from "./cursor-demo/DigestOverlay";
 
 export function AppShell() {
   const ctx = useCursorDemoOptional();
@@ -24,18 +26,20 @@ export function AppShell() {
   }
 
   return (
-    <div ref={ctx?.mockupRef} className="relative flex h-[640px] md:h-[720px] bg-page-bg">
-      {/* md rail — icon-only */}
+    <div
+      ref={ctx?.mockupRef}
+      onMouseEnter={ctx?.cursor.notifyMouseEnter}
+      onMouseLeave={ctx?.cursor.notifyMouseLeave}
+      className="relative flex h-[640px] md:h-[720px] bg-page-bg"
+    >
       <div className="hidden md:block lg:hidden w-[60px] flex-shrink-0 border-r border-border-warm overflow-hidden">
         <MockSidebar activeView={activeView} onNavigate={handleNavigate} compact />
       </div>
 
-      {/* lg full sidebar */}
       <div className="hidden lg:block w-[240px] flex-shrink-0 border-r border-border-warm overflow-hidden">
         <MockSidebar activeView={activeView} onNavigate={handleNavigate} />
       </div>
 
-      {/* Main pane */}
       <main className="flex-1 min-w-0 overflow-y-auto flex flex-col">
         <MockMobileBar onOpenSidebar={() => setMobileSidebarOpen(true)} />
         <div className="flex-1 min-h-0">
@@ -88,6 +92,20 @@ export function AppShell() {
           </>
         )}
       </AnimatePresence>
+
+      {/* Cursor demo layers — only render when context is present (md+ inside HomeMockup) */}
+      {ctx && (
+        <>
+          <DigestOverlay open={ctx.cursor.digestOpen} saved={ctx.cursor.digestSaved} />
+          <CursorOverlay
+            x={ctx.cursor.x}
+            y={ctx.cursor.y}
+            visible={ctx.cursor.visible}
+            tooltipKey={ctx.cursor.tooltipKey}
+            ripple={ctx.cursor.ripple}
+          />
+        </>
+      )}
     </div>
   );
 }
