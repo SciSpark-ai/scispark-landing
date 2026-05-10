@@ -42,6 +42,7 @@ export function HomeView() {
               key={value}
               onClick={() => setActiveTab(value)}
               type="button"
+              data-cursor-target={value === "for-you" ? "tab-for-you" : undefined}
               className={`pb-2 px-1 text-[14px] tracking-body border-b-2 transition-colors ${
                 activeTab === value
                   ? "text-espresso font-medium border-orange"
@@ -80,8 +81,10 @@ export function HomeView() {
 
         {/* Card grid */}
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[14px]">
-          {papers.map((paper) => (
-            <FeedCard key={paper.id} paper={paper} />
+          {papers.map((paper, idx) => (
+            <div key={paper.id} data-cursor-target={idx === 0 ? "feed-card-0" : undefined}>
+              <FeedCard paper={paper} />
+            </div>
           ))}
         </div>
       </div>

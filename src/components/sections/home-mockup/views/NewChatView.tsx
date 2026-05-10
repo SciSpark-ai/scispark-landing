@@ -51,12 +51,14 @@ export function NewChatView() {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t("placeholder")}
                 rows={2}
+                data-cursor-target="chat-textarea"
                 className="flex-1 text-[15px] text-espresso tracking-body placeholder:text-muted-text bg-transparent focus:outline-none resize-none"
               />
             </div>
             <div className="flex items-center justify-between mt-3">
               <Plus size={16} className="text-muted-text" />
               <div
+                data-cursor-target="chat-send"
                 className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ${
                   query.trim() ? "bg-orange text-white" : "bg-card-surface text-muted-text"
                 }`}

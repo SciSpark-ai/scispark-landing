@@ -36,9 +36,10 @@ export function ProjectsView() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
-        {MOCK_PROJECTS.map((project) => (
+        {MOCK_PROJECTS.map((project, idx) => (
           <div
             key={project.id}
+            data-cursor-target={idx === 0 ? "project-card-0" : undefined}
             className="bg-white border border-border-warm/30 rounded-[14px] p-5 hover:shadow-sm transition-all group"
           >
             <div className="flex items-start justify-between">

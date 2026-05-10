@@ -57,6 +57,7 @@ export function MockSidebar({ activeView, onNavigate, compact = false, onClose }
               key={item.id}
               onClick={() => onNavigate(item.id)}
               type="button"
+              data-cursor-target={`sidebar-${item.id}`}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[14px] tracking-body transition-colors ${
                 isActive
                   ? "bg-card-surface text-espresso font-medium"
