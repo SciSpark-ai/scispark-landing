@@ -12,6 +12,7 @@ function CaptionStripBound() {
       captionKey={cursor.captionKey}
       activeBeatIndex={cursor.activeBeatIndex}
       visible={cursor.visible}
+      onSelectBeat={cursor.jumpToBeat}
     />
   );
 }

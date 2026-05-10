@@ -28,6 +28,7 @@ export interface UseCursorScriptResult {
   notifyMouseEnter: () => void;
   notifyMouseLeave: () => void;
   notifyUserNavigated: () => void;
+  jumpToBeat: (beatIndex: number) => void;
 }
 
 const REDUCED_MOTION =
@@ -246,10 +247,13 @@ export function useCursorScript({
     return true;
   }
 
-  async function runScriptLoop(token: number): Promise<void> {
+  async function runScriptLoop(token: number, startBeat = 0): Promise<void> {
     setVisible(true);
+    let firstIteration = true;
     while (cancelTokenRef.current === token) {
-      for (let i = 0; i < SCRIPT.length; i++) {
+      const startIndex = firstIteration ? startBeat : 0;
+      firstIteration = false;
+      for (let i = startIndex; i < SCRIPT.length; i++) {
         if (cancelTokenRef.current !== token) return;
         setActiveBeatIndex(i);
         const ok = await runBeat(SCRIPT[i], token);
@@ -334,6 +338,36 @@ export function useCursorScript({
     setModeBoth("userControlled");
   }
 
+  function jumpToBeat(beatIndex: number) {
+    if (beatIndex < 0 || beatIndex >= SCRIPT.length) return;
+
+    // Cancel any in-flight run, drop pending timers / gates.
+    releasePauseGate();
+    if (mouseLeaveTimerRef.current) {
+      clearTimeout(mouseLeaveTimerRef.current);
+      mouseLeaveTimerRef.current = null;
+    }
+
+    // Set up the prerequisite view so the beat's first step finds its target.
+    // Beats that navigate themselves (ask/project) handle their own view.
+    const beatId = SCRIPT[beatIndex].id;
+    if (beatId === "discover" || beatId === "read") {
+      setActiveViewFromScript("home");
+    } else if (beatId === "save") {
+      setActiveViewFromScript("paper");
+    }
+
+    setDigestSaved(false);
+    setQueryFromScript("");
+    setTooltipKey(null);
+    setCaptionKey(SCRIPT[beatIndex].captionKey);
+    setActiveBeatIndex(beatIndex);
+
+    const token = ++cancelTokenRef.current;
+    setModeBoth("playing");
+    void runScriptLoop(token, beatIndex);
+  }
+
   return {
     x,
     y,
@@ -347,5 +381,6 @@ export function useCursorScript({
     notifyMouseEnter,
     notifyMouseLeave,
     notifyUserNavigated,
+    jumpToBeat,
   };
 }

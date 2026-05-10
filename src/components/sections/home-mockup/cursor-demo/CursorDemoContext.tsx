@@ -34,6 +34,7 @@ interface CursorDemoContextValue {
     notifyMouseEnter: () => void;
     notifyMouseLeave: () => void;
     notifyUserNavigated: () => void;
+    jumpToBeat: (beatIndex: number) => void;
   };
 }
 
