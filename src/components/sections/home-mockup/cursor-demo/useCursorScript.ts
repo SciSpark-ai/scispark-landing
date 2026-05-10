@@ -89,6 +89,8 @@ export function useCursorScript({
   const modeRef = useRef<ScriptMode>("idle");
   const cancelTokenRef = useRef(0);
   const pauseSignalRef = useRef<{ resolve?: () => void }>({});
+  const mouseLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const digestCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keep modeRef in sync so the async runner can read latest synchronously.
   useEffect(() => {
@@ -170,8 +172,11 @@ export function useCursorScript({
         }
         if (step.target === "digest-save") {
           setDigestSaved(true);
-          // close the overlay shortly after the saved feedback so beat 4 starts clean
-          setTimeout(() => setDigestOpen(false), 700);
+          if (digestCloseTimerRef.current) clearTimeout(digestCloseTimerRef.current);
+          digestCloseTimerRef.current = setTimeout(() => {
+            digestCloseTimerRef.current = null;
+            setDigestOpen(false);
+          }, 700);
         }
         break;
       case "navigate":
@@ -220,6 +225,10 @@ export function useCursorScript({
       // Loop: reset to home view before restarting beat 1
       setActiveViewFromScript("home");
       setQueryFromScript("");
+      if (digestCloseTimerRef.current) {
+        clearTimeout(digestCloseTimerRef.current);
+        digestCloseTimerRef.current = null;
+      }
       setDigestOpen(false);
       setDigestSaved(false);
       await delay(800, token);
@@ -243,6 +252,10 @@ export function useCursorScript({
           } else if (!entry.isIntersecting && modeRef.current !== "userControlled") {
             cancelTokenRef.current++;
             releasePauseGate();
+            if (digestCloseTimerRef.current) {
+              clearTimeout(digestCloseTimerRef.current);
+              digestCloseTimerRef.current = null;
+            }
             setVisible(false);
             setActiveBeatIndex(0);
             setTooltipKey(null);
@@ -256,17 +269,32 @@ export function useCursorScript({
       { threshold: 0.4 },
     );
     observer.observe(root);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (mouseLeaveTimerRef.current) {
+        clearTimeout(mouseLeaveTimerRef.current);
+        mouseLeaveTimerRef.current = null;
+      }
+      if (digestCloseTimerRef.current) {
+        clearTimeout(digestCloseTimerRef.current);
+        digestCloseTimerRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mockupRef]);
 
   // Pause / resume hooks consumed by AppShell mouse handlers
   function notifyMouseEnter() {
+    if (mouseLeaveTimerRef.current !== null) {
+      clearTimeout(mouseLeaveTimerRef.current);
+      mouseLeaveTimerRef.current = null;
+    }
     if (modeRef.current === "playing") setModeBoth("paused");
   }
   function notifyMouseLeave() {
     if (modeRef.current === "paused") {
-      setTimeout(() => {
+      mouseLeaveTimerRef.current = setTimeout(() => {
+        mouseLeaveTimerRef.current = null;
         if (modeRef.current === "paused") {
           setModeBoth("playing");
           releasePauseGate();
@@ -277,6 +305,10 @@ export function useCursorScript({
   function notifyUserNavigated() {
     cancelTokenRef.current++;
     releasePauseGate();
+    if (digestCloseTimerRef.current) {
+      clearTimeout(digestCloseTimerRef.current);
+      digestCloseTimerRef.current = null;
+    }
     setVisible(false);
     setDigestOpen(false);
     setDigestSaved(false);
