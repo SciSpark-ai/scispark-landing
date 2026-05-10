@@ -249,7 +249,9 @@ export function useCursorScript({
             const token = ++cancelTokenRef.current;
             setModeBoth("playing");
             void runScriptLoop(token);
-          } else if (!entry.isIntersecting && modeRef.current !== "userControlled") {
+          } else if (!entry.isIntersecting && modeRef.current !== "idle") {
+            // Reset on scroll-out from any non-idle state (playing, paused, OR userControlled),
+            // so the script re-arms when the user scrolls back into view.
             cancelTokenRef.current++;
             releasePauseGate();
             if (digestCloseTimerRef.current) {
