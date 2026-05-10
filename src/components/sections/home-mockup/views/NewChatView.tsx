@@ -73,7 +73,7 @@ export function NewChatView() {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mt-5">
+        <div className="flex flex-nowrap justify-center gap-1.5 mt-5">
           {suggestions.map((s) => {
             const Icon = s.icon;
             const label = t(s.key);
@@ -82,9 +82,9 @@ export function NewChatView() {
                 key={s.key}
                 onClick={() => handleChip(label)}
                 type="button"
-                className="bg-card-surface border border-border-warm rounded-pill px-3 py-1.5 text-[13px] text-espresso hover:bg-border-warm transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                className="bg-card-surface border border-border-warm rounded-pill px-2.5 py-1.5 text-[13px] text-espresso hover:bg-border-warm transition-colors flex items-center gap-1.5 whitespace-nowrap"
               >
-                <Icon size={14} className="text-orange" />
+                <Icon size={14} className="text-orange flex-shrink-0" />
                 {label}
               </button>
             );
