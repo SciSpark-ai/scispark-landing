@@ -88,14 +88,24 @@ async function findTargetElement(
   return null;
 }
 
-/** True when the target is comfortably inside the root's viewport (with padding). */
-function isInViewport(root: HTMLElement, el: HTMLElement, padding = 60): boolean {
-  const rootRect = root.getBoundingClientRect();
-  const elRect = el.getBoundingClientRect();
-  return (
-    elRect.top >= rootRect.top + padding &&
-    elRect.bottom <= rootRect.bottom - padding
-  );
+/** Closest scrollable ancestor between `el` and `root` (inclusive of intermediate). */
+function findScrollableAncestor(
+  el: HTMLElement,
+  root: HTMLElement,
+): HTMLElement | null {
+  let node: HTMLElement | null = el.parentElement;
+  while (node && root.contains(node) && node !== root) {
+    const style = window.getComputedStyle(node);
+    const overflowY = style.overflowY;
+    if (
+      (overflowY === "auto" || overflowY === "scroll") &&
+      node.scrollHeight > node.clientHeight
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
 }
 
 export function useCursorScript({
@@ -183,16 +193,41 @@ export function useCursorScript({
 
     if (step.tooltipKey) setTooltipKey(step.tooltipKey);
 
-    // Auto-scroll the AppShell's scrollable pane so the target is visible
-    // before the cursor moves to it (otherwise the cursor can vanish below
-    // the fold inside long views like Home or PaperDigest).
-    if (!isInViewport(root, targetEl)) {
-      targetEl.scrollIntoView({
-        behavior: REDUCED_MOTION ? "instant" : "smooth",
-        block: "center",
-      });
-      if (!REDUCED_MOTION) {
-        if (!(await delay(450, token))) return false;
+    // Auto-scroll the AppShell's internal scrollable pane so the target is
+    // visible before the cursor moves to it. We scroll the closest scrollable
+    // ancestor *inside* the mockup root directly (no `scrollIntoView`) so the
+    // outer page doesn't move.
+    const scrollable = findScrollableAncestor(targetEl, root);
+    if (scrollable) {
+      const padding = 60;
+      const elRect = targetEl.getBoundingClientRect();
+      const containerRect = scrollable.getBoundingClientRect();
+      const elTopInScroll =
+        elRect.top - containerRect.top + scrollable.scrollTop;
+      const elBottomInScroll = elTopInScroll + elRect.height;
+      const viewportTop = scrollable.scrollTop;
+      const viewportBottom = scrollable.scrollTop + scrollable.clientHeight;
+
+      let nextScroll: number | null = null;
+      if (elTopInScroll < viewportTop + padding) {
+        nextScroll = Math.max(0, elTopInScroll - padding);
+      } else if (elBottomInScroll > viewportBottom - padding) {
+        const centered =
+          elTopInScroll + elRect.height / 2 - scrollable.clientHeight / 2;
+        nextScroll = Math.max(
+          0,
+          Math.min(centered, scrollable.scrollHeight - scrollable.clientHeight),
+        );
+      }
+
+      if (nextScroll !== null) {
+        scrollable.scrollTo({
+          top: nextScroll,
+          behavior: REDUCED_MOTION ? "instant" : "smooth",
+        });
+        if (!REDUCED_MOTION) {
+          if (!(await delay(450, token))) return false;
+        }
       }
     }
 
