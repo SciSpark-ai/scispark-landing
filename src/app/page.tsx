@@ -1,5 +1,6 @@
 import { Navigation } from "@/components/sections/Navigation";
 import { Hero } from "@/components/sections/Hero";
+import { HomeMockup } from "@/components/sections/home-mockup";
 import { ProblemStatement } from "@/components/sections/ProblemStatement";
 import { ProductShowcase } from "@/components/sections/product-showcase";
 import { HowItWorks } from "@/components/sections/HowItWorks";
@@ -13,6 +14,7 @@ export default function Home() {
     <main className="min-h-screen bg-page-bg">
       <Navigation />
       <Hero />
+      <HomeMockup />
       <ProblemStatement />
       <ProductShowcase />
       <HowItWorks />

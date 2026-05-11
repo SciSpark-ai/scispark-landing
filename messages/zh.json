@@ -91,5 +91,120 @@
     "privacy": "隐私政策",
     "terms": "服务条款",
     "contact": "联系我们"
+  },
+  "homeMockup": {
+    "ariaLabel": "产品预览",
+    "sidebar": {
+      "navHome": "主页",
+      "navChat": "新对话",
+      "navProjects": "项目",
+      "navLibrary": "收藏",
+      "navHistory": "历史",
+      "recentChats": "最近对话"
+    },
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "home": {
+      "tabForYou": "为你推荐",
+      "tabTrending": "趋势",
+      "tabBySpecialty": "按专科",
+      "newResearch": "最新研究",
+      "yourWeek": "本周动态",
+      "papersThisWeek": "本周论文",
+      "diffVsLastWeek": "较上周",
+      "newInInterests": "条关注领域更新",
+      "trendingInFields": "个研究方向热门",
+      "savedUnread": "条已收藏未读",
+      "trendingTopics": "热门主题",
+      "readingStreak": "连续阅读",
+      "dayStreak": "天连续阅读",
+      "best": "最佳",
+      "moreToBeatRecord": "天即可打破纪录"
+    },
+    "chat": {
+      "tagline": "AI 驱动的临床证据助手",
+      "placeholder": "询问临床证据、治疗方案、指南…",
+      "chipCompare": "对比治疗方案",
+      "chipSummarize": "总结 RCT",
+      "chipGuidelines": "查找指南",
+      "chipRisk": "风险收益评估"
+    },
+    "projects": {
+      "title": "项目",
+      "description": "将论文、对话和笔记整理为研究项目。",
+      "newProject": "新建项目",
+      "searchPlaceholder": "搜索项目…",
+      "papersLabel": "篇论文",
+      "chatsLabel": "段对话",
+      "createNew": "创建新项目"
+    },
+    "library": {
+      "title": "收藏",
+      "tabSaved": "已收藏",
+      "tabLiked": "已点赞",
+      "tabReadLater": "稍后阅读"
+    },
+    "history": {
+      "title": "历史",
+      "groupToday": "今天",
+      "groupYesterday": "昨天",
+      "groupThisWeek": "本周",
+      "groupEarlier": "更早"
+    },
+    "cursorDemo": {
+      "tooltip": {
+        "discover": "浏览今日证据",
+        "read": "打开摘要",
+        "save": "加入收藏",
+        "openChat": "打开对话",
+        "askAnything": "提问任何问题",
+        "send": "发送",
+        "project": "按病例分组"
+      },
+      "caption": {
+        "discover": "发现 — 每日证据流，按相关性排序。",
+        "read": "阅读 — 30 秒读完一篇论文摘要。",
+        "save": "收藏 — 让重要内容触手可及。",
+        "ask": "提问 — 获得有引用的临床答案。",
+        "project": "项目 — 按患者或主题组织研究。"
+      },
+      "chatQuestion": "SGLT2 抑制剂在 HFpEF 中的最新证据？",
+      "digest": {
+        "saveLabel": "收藏"
+      }
+    },
+    "paperDigest": {
+      "back": "返回",
+      "publishedIn": "发表于",
+      "citations": "次引用",
+      "viewFullPaper": "查看全文",
+      "like": "喜欢",
+      "save": "收藏",
+      "saved": "已收藏",
+      "readLater": "稍后阅读",
+      "share": "分享",
+      "aiSummary": "AI 摘要",
+      "tabLay": "通俗摘要",
+      "tabAbstract": "原文摘要",
+      "copySummary": "复制摘要",
+      "figureDigest": "图表解读",
+      "keyBreakpoints": "关键节点与方法",
+      "codeLabel": "代码",
+      "dataLabel": "数据",
+      "relatedExtended": "相关与延伸",
+      "relatedTag": "相关",
+      "quickCitation": "快速引用",
+      "copyBibtex": "复制 BibTeX",
+      "copyApa": "复制 APA",
+      "exportZotero": "导出到 Zotero",
+      "relevanceTitle": "这篇论文对你有用吗？",
+      "relevanceSubtitle": "反馈有助于我们推荐更相关的论文。",
+      "relevanceYes": "有用",
+      "relevanceNo": "无关",
+      "originalLabel": "原标题："
+    }
   }
 }

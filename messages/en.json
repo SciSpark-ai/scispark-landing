@@ -91,5 +91,120 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact"
+  },
+  "homeMockup": {
+    "ariaLabel": "Product preview",
+    "sidebar": {
+      "navHome": "Home",
+      "navChat": "New Chat",
+      "navProjects": "Projects",
+      "navLibrary": "Library",
+      "navHistory": "History",
+      "recentChats": "Recent Chats"
+    },
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "home": {
+      "tabForYou": "For You",
+      "tabTrending": "Trending",
+      "tabBySpecialty": "By Specialty",
+      "newResearch": "New research",
+      "yourWeek": "Your Week",
+      "papersThisWeek": "papers this week",
+      "diffVsLastWeek": "vs last week",
+      "newInInterests": "new in your interests",
+      "trendingInFields": "trending in your fields",
+      "savedUnread": "saved & unread",
+      "trendingTopics": "Trending Topics",
+      "readingStreak": "Reading Streak",
+      "dayStreak": "day streak",
+      "best": "Best",
+      "moreToBeatRecord": "more to beat your record"
+    },
+    "chat": {
+      "tagline": "AI-powered clinical evidence assistant",
+      "placeholder": "Ask about clinical evidence, treatments, guidelines...",
+      "chipCompare": "Compare treatments",
+      "chipSummarize": "Summarize RCT",
+      "chipGuidelines": "Find guidelines",
+      "chipRisk": "Risk vs benefit"
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "Organize papers, chats, and notes into research projects.",
+      "newProject": "New Project",
+      "searchPlaceholder": "Search projects...",
+      "papersLabel": "papers",
+      "chatsLabel": "chats",
+      "createNew": "Create new project"
+    },
+    "library": {
+      "title": "Library",
+      "tabSaved": "Saved",
+      "tabLiked": "Liked",
+      "tabReadLater": "Read Later"
+    },
+    "history": {
+      "title": "History",
+      "groupToday": "Today",
+      "groupYesterday": "Yesterday",
+      "groupThisWeek": "This Week",
+      "groupEarlier": "Earlier"
+    },
+    "cursorDemo": {
+      "tooltip": {
+        "discover": "Skim today's evidence",
+        "read": "Open the digest",
+        "save": "Add to library",
+        "openChat": "Open chat",
+        "askAnything": "Ask anything",
+        "send": "Send",
+        "project": "Group by case"
+      },
+      "caption": {
+        "discover": "Discover — your daily feed, ranked by relevance.",
+        "read": "Read — paper summaries you can scan in 30 seconds.",
+        "save": "Save — keep what matters within reach.",
+        "ask": "Ask — get cited answers, not just links.",
+        "project": "Project — organize research around a patient or topic."
+      },
+      "chatQuestion": "Latest evidence on SGLT2 inhibitors in HFpEF?",
+      "digest": {
+        "saveLabel": "Save"
+      }
+    },
+    "paperDigest": {
+      "back": "Back",
+      "publishedIn": "Published in",
+      "citations": "citations",
+      "viewFullPaper": "View Full Paper",
+      "like": "Like",
+      "save": "Save",
+      "saved": "Saved",
+      "readLater": "Read Later",
+      "share": "Share",
+      "aiSummary": "AI Summary",
+      "tabLay": "Lay Summary",
+      "tabAbstract": "Original Abstract",
+      "copySummary": "Copy Summary",
+      "figureDigest": "Figure Digest",
+      "keyBreakpoints": "Key Breakpoints & Methods",
+      "codeLabel": "Code",
+      "dataLabel": "Data",
+      "relatedExtended": "Related & Extended",
+      "relatedTag": "Related",
+      "quickCitation": "Quick Citation",
+      "copyBibtex": "Copy BibTeX",
+      "copyApa": "Copy APA",
+      "exportZotero": "Export to Zotero",
+      "relevanceTitle": "Is this paper relevant to you?",
+      "relevanceSubtitle": "Giving feedback helps us give you better paper recommendations.",
+      "relevanceYes": "Yes",
+      "relevanceNo": "No",
+      "originalLabel": "Original:"
+    }
   }
 }
